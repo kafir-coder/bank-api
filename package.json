@@ -1,0 +1,23 @@
+{
+  "name": "bank-api",
+  "version": "0.0.1",
+  "description": "A simple API that implements trivial bank account operation",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kafir-coder/bank-api.git"
+  },
+  "keywords": [
+    "bank",
+    "mutual"
+  ],
+  "author": "Caio Tony <caiotony16@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kafir-coder/bank-api/issues"
+  },
+  "homepage": "https://github.com/kafir-coder/bank-api#readme"
+}
