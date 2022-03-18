@@ -16,6 +16,7 @@ export class CreateAccountServiceImpl implements ICreateAccountService {
 
 		if (already_exists) return null
 
+		await this.createAccountRepository.create(data)
 		return Object.assign({id: 'some-id'}, data)
 	} 
 }
