@@ -12,9 +12,9 @@ export class CreateAccountServiceImpl implements ICreateAccountService {
 
 	async createAccountService(data: AddAccountParams): Promise<AccountModel | null> {
 		const {cpf} = data
-		const alredy_exists = await this.getAccountRepository.existsByCPF(cpf)
+		const already_exists = await this.getAccountRepository.existsByCPF(cpf)
 
-		if (alredy_exists) return null
+		if (already_exists) return null
 
 		return Object.assign({id: 'some-id'}, data)
 	} 
