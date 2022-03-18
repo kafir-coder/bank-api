@@ -29,6 +29,9 @@ const make_sut = (): SutTypes => {
 }
 describe('CreateAccount Service', () => {
   
+	afterEach(() => {
+		jest.clearAllMocks()
+	})
 	it('should call GetAccountRepository.existsByCPF', async () => {
 
 		const data: AddAccountParams = {
@@ -65,9 +68,7 @@ describe('CreateAccount Service', () => {
 			cpf: '1234567890', 
 			balance: 123.5
 		}
-		const { sut, getAccountRepository } = make_sut() 
-
-		jest.spyOn(getAccountRepository, 'existsByCPF').mockReturnValue(Promise.resolve(true))
+		const { sut } = make_sut() 
 
 		const result = await sut.createAccountService(data)
 
