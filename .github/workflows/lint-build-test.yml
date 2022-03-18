@@ -19,10 +19,7 @@ jobs:
       - name: Install packages
         run: npm install
       - name: lint with eslint
-        uses: synergy-au/eslint-action@v1
-        with:
-          rules-path: './.eslintrc.yml'
-          setup-from-package-json: 'true'
+        run: npm run lint
       - name: test
         run: npm run test
       - name: build
