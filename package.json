@@ -4,6 +4,7 @@
   "description": "A simple API that implements trivial bank account operation",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint src --ext .ts, .js",
     "test": "jest",
     "prebuild": "rimraf build/",
     "build": "npm run prebuild && tsc",
