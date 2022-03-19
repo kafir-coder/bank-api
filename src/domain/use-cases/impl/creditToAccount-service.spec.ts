@@ -102,4 +102,19 @@ describe('CreditToAccount usecase', () => {
 
 		expect(writeTransactionRepository.add).toHaveBeenCalledWith(data)
 	})
+
+	it('should return what TransactionRepository.add returns', async () => {
+		const data: AddTransactionParams = {
+			account_id: 'some-id',
+			amount: 20.4, 
+			type: 'credit'
+		}
+		const { sut, writeTransactionRepository } = make_sut()
+
+		const transaction = {...data, id: 'another-id'}
+		jest.spyOn(writeTransactionRepository, 'add').mockReturnValue(Promise.resolve(transaction))
+		const result = await sut.creditToAccount(data)
+
+		expect(result).toEqual(transaction)
+	})
 })
