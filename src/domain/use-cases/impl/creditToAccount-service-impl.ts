@@ -13,7 +13,8 @@ export class CreditToAccountServiceImpl implements ICreditToAccountService {
 	}
 	async creditToAccount(data: Omit<AddTransactionParams, 'type'>): Promise<TransactionModel | null> {
 		const { account_id } = data
-		this.readAccountRepository.exists(account_id)
+		const account_exists = await this.readAccountRepository.exists(account_id)
+		if (!account_exists) return null
 		return Object.assign({id: 'some-id'}, {...data, type: 'credit'})
 	}
 }
