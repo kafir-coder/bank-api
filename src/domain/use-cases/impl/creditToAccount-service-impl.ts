@@ -15,6 +15,8 @@ export class CreditToAccountServiceImpl implements ICreditToAccountService {
 		const { account_id } = data
 		const account_exists = await this.readAccountRepository.exists(account_id)
 		if (!account_exists) return null
+
+		this.writeTransactionRepository.add({...data, type: 'some-id'})
 		return Object.assign({id: 'some-id'}, {...data, type: 'credit'})
 	}
 }
