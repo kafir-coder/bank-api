@@ -16,6 +16,8 @@ export class DebitFromAccountServiceImpl implements IDebitFromAccountService {
 		const { account_id } = data
 		const account_exists = await this.getAccountRepository.exists(account_id)
 		if (!account_exists) return null
+
+		await this.getAccountRepository.getBalance(account_id)
 		return Object.assign({id: 'some-id'}, data)
 	}
 }
