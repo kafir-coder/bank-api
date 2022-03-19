@@ -1,4 +1,4 @@
-import { IAddTransactionRepository } from 'src/domain/models/contracts/addTransaction-repository'
+import { IAddTransactionRepository } from 'src/domain/models/contracts/writeTransaction-repository'
 import { AddTransactionParams, TransactionModel } from 'src/domain/models/transaction'
 
 export class AddTransactionRepositoryMock implements IAddTransactionRepository {

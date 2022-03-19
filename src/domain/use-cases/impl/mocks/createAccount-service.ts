@@ -1,6 +1,6 @@
 import { AccountModel, AddAccountParams } from 'src/domain/models/account'
-import { ICreateAccountRepository } from 'src/domain/models/contracts/createAccount-repository'
-import { IGetAccountRepository } from 'src/domain/models/contracts/getAccount-repository'
+import { ICreateAccountRepository } from 'src/domain/models/contracts/writeAccount-repository'
+import { IGetAccountRepository } from 'src/domain/models/contracts/readAccount-repository'
 
 export class CreateAccountRepositoryMock implements ICreateAccountRepository {
 	async create(data: AddAccountParams): Promise<AccountModel> {

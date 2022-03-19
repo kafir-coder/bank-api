@@ -1,6 +1,6 @@
 import {Adapter, Service} from '@tsclean/core'
-import { ADD_TRANSACTION_REPOSITORY, IAddTransactionRepository } from '../../models/contracts/addTransaction-repository'
-import { GET_ACCOUNT_REPOSITORY, IGetAccountRepository } from '../../models/contracts/getAccount-repository'
+import { ADD_TRANSACTION_REPOSITORY, IAddTransactionRepository } from '../../models/contracts/writeTransaction-repository'
+import { GET_ACCOUNT_REPOSITORY, IGetAccountRepository } from '../../models/contracts/readAccount-repository'
 import { AddTransactionParams, TransactionModel } from '../../models/transaction'
 import {IDebitFromAccountService} from '../../use-cases/debitFromAccount-service'
 

@@ -1,5 +1,5 @@
-import { IAddTransactionRepository } from '../../models/contracts/addTransaction-repository'
-import { IGetAccountRepository } from '../../models/contracts/getAccount-repository'
+import { IAddTransactionRepository } from '../../models/contracts/writeTransaction-repository'
+import { IGetAccountRepository } from '../../models/contracts/readAccount-repository'
 import { AddTransactionParams } from '../../models/transaction'
 import { IDebitFromAccountService } from '../debitFromAccount-service'
 import { DebitFromAccountServiceImpl } from './debitFromAccount-service-impl'
