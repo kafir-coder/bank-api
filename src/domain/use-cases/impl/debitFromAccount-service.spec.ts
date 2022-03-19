@@ -54,5 +54,20 @@ describe('DebitFromAccount usecase', () => {
 		await sut.debitFromAccount(data)
 		expect(getAccountRepository.exists).toHaveBeenCalledWith(data.account_id)
 	})
-	
+
+	it('should return null if AccountRepository.exists returns false', async () => {
+		const data: AddTransactionParams = {
+			account_id: 'some-id',
+			value: 20.4, 
+			type: 'debit'
+		}
+		const { sut, getAccountRepository } = make_sut() 
+
+		jest.spyOn(getAccountRepository, 'exists').mockReturnValue(Promise.resolve(false))
+
+		const result = await sut.debitFromAccount(data)
+
+		expect(result).toBe(null)
+	})
+
 })
