@@ -172,4 +172,19 @@ describe('DebitFromAccount usecase', () => {
 
 		expect(result).toBe(null)
 	})
+
+	it('should return a TransactionModel object', async () => {
+		const data: AddTransactionParams = {
+			account_id: 'some-id',
+			value: 20.4, 
+			type: 'debit'
+		}
+	
+		const { sut } = make_sut() 
+	
+		const transaction = Object.assign({id: 'some-id'}, data)
+		const result = await sut.debitFromAccount(data)
+	
+		expect(result).toStrictEqual(transaction)
+	})
 })
