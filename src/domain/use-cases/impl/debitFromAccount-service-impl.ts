@@ -15,14 +15,14 @@ export class DebitFromAccountServiceImpl implements IDebitFromAccountService {
 
 	async debitFromAccount(data: Omit<AddTransactionParams, 'type'>): Promise<TransactionModel | null> {
 		
-		const { account_id, value } = data
+		const { account_id, amount } = data
 		
 		const account_exists = await this.readAccountRepository.exists(account_id)
 		if (!account_exists) return null // conta inexistente
 
 		const balance = await this.readAccountRepository.getBalance(account_id)
 
-		const difference = balance-value
+		const difference = balance-amount
 		if (difference < 0) return null // conta não tem dinheiro suficiente
 
 		const transaction = await this.writeTransactionRepository.add({...data, type: 'debit'})

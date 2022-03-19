@@ -33,7 +33,7 @@ describe('DebitFromAccount usecase', () => {
 	it('should call AccountRepository.exists',async () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
-			value: 20.4, 
+			amount: 20.4, 
 			type: 'debit'
 		}
 		const { sut, readAccountRepository } = make_sut() 
@@ -47,7 +47,7 @@ describe('DebitFromAccount usecase', () => {
 	it('should call AccountRepository.exists with proper argument',async () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
-			value: 20.4, 
+			amount: 20.4, 
 			type: 'debit'
 		}
 		const { sut, readAccountRepository } = make_sut() 
@@ -61,7 +61,7 @@ describe('DebitFromAccount usecase', () => {
 	it('should return null if AccountRepository.exists returns false', async () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
-			value: 20.4, 
+			amount: 20.4, 
 			type: 'debit'
 		}
 		const { sut, readAccountRepository } = make_sut() 
@@ -76,7 +76,7 @@ describe('DebitFromAccount usecase', () => {
 	it('should call AccountRepository.getBalance', async () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
-			value: 20.4, 
+			amount: 20.4, 
 			type: 'debit'
 		}
 		const { sut, readAccountRepository } = make_sut() 
@@ -90,7 +90,7 @@ describe('DebitFromAccount usecase', () => {
 	it('should call AccountRepository.getBalance with proper argument', async () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
-			value: 20.4, 
+			amount: 20.4, 
 			type: 'debit'
 		}
 		const { sut, readAccountRepository } = make_sut() 
@@ -101,15 +101,15 @@ describe('DebitFromAccount usecase', () => {
 		expect(readAccountRepository.getBalance).toHaveBeenCalledWith(data.account_id)
 	})
 
-	it('should return null if difference between balance and value to debit be negative', async () => {
+	it('should return null if difference between balance and amount to debit be negative', async () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
-			value: 20.4, 
+			amount: 20.4, 
 			type: 'debit'
 		}
 		const { sut, readAccountRepository } = make_sut() 
 
-		// returns a value less than data.value
+		// returns a amount less than data.amount
 		jest.spyOn(readAccountRepository, 'getBalance').mockReturnValue(Promise.resolve(10.4))
 
 		const result = await sut.debitFromAccount(data)
@@ -120,12 +120,12 @@ describe('DebitFromAccount usecase', () => {
 	it('should call TransactionRepository.add', async () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
-			value: 20.4, 
+			amount: 20.4, 
 			type: 'debit'
 		}
 		const { sut, writeTransactionRepository } = make_sut() 
 
-		// returns a value less than data.value
+		// returns a amount less than data.amount
 		jest.spyOn(writeTransactionRepository, 'add')
 
 		await sut.debitFromAccount(data)
@@ -135,12 +135,12 @@ describe('DebitFromAccount usecase', () => {
 	it('should call TransactionRepository.add with proper argument', async () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
-			value: 20.4, 
+			amount: 20.4, 
 			type: 'debit'
 		}
 		const { sut, writeTransactionRepository } = make_sut() 
 
-		// returns a value less than data.value
+		// returns a amount less than data.amount
 		jest.spyOn(writeTransactionRepository, 'add')
 
 		await sut.debitFromAccount(data)
@@ -151,7 +151,7 @@ describe('DebitFromAccount usecase', () => {
 
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
-			value: 20.4, 
+			amount: 20.4, 
 			type: 'debit'
 		}
 		const { sut, writeTransactionRepository } = make_sut() 
@@ -167,7 +167,7 @@ describe('DebitFromAccount usecase', () => {
 	it('should return a TransactionModel object', async () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
-			value: 20.4, 
+			amount: 20.4, 
 			type: 'debit'
 		}
 	
@@ -182,12 +182,12 @@ describe('DebitFromAccount usecase', () => {
 	it('should call AccountRepository.update', async () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
-			value: 20.4, 
+			amount: 20.4, 
 			type: 'debit'
 		}
 		const { sut, writeAccountRepository } = make_sut() 
 
-		// returns a value less than data.value
+		// returns a amount less than data.amount
 		jest.spyOn(writeAccountRepository, 'update')
 
 		await sut.debitFromAccount(data)
@@ -198,18 +198,18 @@ describe('DebitFromAccount usecase', () => {
 	it('should call AccountRepository.update with proper arguments', async () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
-			value: 20.4, 
+			amount: 20.4, 
 			type: 'debit'
 		}
 		const { sut, writeAccountRepository, readAccountRepository } = make_sut() 
 
-		// returns a value less than data.value
+		// returns a amount less than data.amount
 		jest.spyOn(writeAccountRepository, 'update')
 
 		const balance = await readAccountRepository.getBalance(data.account_id)
 		await sut.debitFromAccount(data)
 
-		const difference = balance-data.value
+		const difference = balance-data.amount
 		expect(writeAccountRepository.update).toHaveBeenCalledWith({balance: difference})
 	})
 })
