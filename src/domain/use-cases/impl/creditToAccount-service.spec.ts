@@ -44,4 +44,33 @@ describe('CreditToAccount usecase', () => {
 
 		expect(readAccountRepository.exists).toHaveBeenCalledTimes(1)
 	})
+
+	it('should call readAccountRepository.exists with proper argument', async () => {
+
+		const data: AddTransactionParams = {
+			account_id: 'some-id',
+			amount: 20.4, 
+			type: 'debit'
+		}
+		const { sut, readAccountRepository } = make_sut()
+
+		jest.spyOn(readAccountRepository, 'exists')
+		await sut.creditToAccount(data)
+
+		expect(readAccountRepository.exists).toHaveBeenCalledWith(data.account_id)
+	})
+
+	it('should return null if readAccountRepository.exists returns false', async () => {
+		const data: AddTransactionParams = {
+			account_id: 'some-id',
+			amount: 20.4, 
+			type: 'debit'
+		}
+		const { sut, readAccountRepository } = make_sut()
+
+		jest.spyOn(readAccountRepository, 'exists').mockReturnValue(Promise.resolve(false))
+		const result = await sut.creditToAccount(data)
+
+		expect(result).toBe(null)
+	})
 })
