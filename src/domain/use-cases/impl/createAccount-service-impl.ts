@@ -1,13 +1,13 @@
 import {Adapter, Service} from '@tsclean/core'
 import {ICreateAccountService} from '../../use-cases/createAccount-service'
-import { ADD_ACCOUNT_REPOSITORY, ICreateAccountRepository } from '../../models/contracts/createAccount-repository'
+import { IWriteAccountRepository, WRITE_ACCOUNT_REPOSITORY } from '../../models/contracts/writeAccount-repository'
 import { AddAccountParams, AccountModel } from 'src/domain/models/account'
-import { GET_ACCOUNT_REPOSITORY, IGetAccountRepository } from '../../models/contracts/getAccount-repository'
+import { IReadAccountRepository, READ_ACCOUNT_REPOSITORY } from '../../models/contracts/readAccount-repository'
 @Service()
 export class CreateAccountServiceImpl implements ICreateAccountService {
 	constructor(
-        @Adapter(ADD_ACCOUNT_REPOSITORY) private readonly createAccountRepository: ICreateAccountRepository,
-				@Adapter(GET_ACCOUNT_REPOSITORY) private readonly getAccountRepository: IGetAccountRepository
+        @Adapter(WRITE_ACCOUNT_REPOSITORY) private readonly createAccountRepository: IWriteAccountRepository,
+				@Adapter(READ_ACCOUNT_REPOSITORY) private readonly getAccountRepository: IReadAccountRepository
 	) {}
 
 	async createAccountService(data: AddAccountParams): Promise<AccountModel | null> {
