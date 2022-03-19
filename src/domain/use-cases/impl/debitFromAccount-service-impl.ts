@@ -13,7 +13,10 @@ export class DebitFromAccountServiceImpl implements IDebitFromAccountService {
 
 	async debitFromAccount(data: AddTransactionParams): Promise<TransactionModel | null> {
 		
-		const { account_id, value } = data
+		const { account_id, value, type } = data
+
+		if (type !== 'debit') return null
+		
 		const account_exists = await this.getAccountRepository.exists(account_id)
 		if (!account_exists) return null
 
