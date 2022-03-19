@@ -106,4 +106,24 @@ describe('CreateAccount Service', () => {
 		await sut.createAccountService(data)
 		expect(createAccountRepository.create).toHaveBeenCalledWith(data)
 	})
+
+	it('should return what CreateAccountRepository.create does returns',async () => {
+		const data: AddAccountParams = {
+			owner_name: 'Caio Tony',
+			cpf: '1234567890', 
+			balance: 123.5
+		}
+
+		const account = Object.assign({id: 'some-id'}, data)
+		const { sut, createAccountRepository, getAccountRepository } = make_sut() 
+		
+		jest.spyOn(getAccountRepository, 'existsByCPF').mockReturnValue(Promise.resolve(false))
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
+		jest.spyOn(createAccountRepository, 'create').mockReturnValue(Promise.resolve(account))
+		const result = await sut.createAccountService(data)
+
+		expect(result).toEqual(account)
+	})
+
 })
