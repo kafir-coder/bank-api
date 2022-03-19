@@ -142,4 +142,21 @@ describe('DebitFromAccount usecase', () => {
 		await sut.debitFromAccount(data)
 		expect(addTransactionRepository.add).toHaveBeenCalledWith(data)
 	})
+
+	it('should return what TransactionRepository.add returns', async () => {
+
+		const data: AddTransactionParams = {
+			account_id: 'some-id',
+			value: 20.4, 
+			type: 'debit'
+		}
+		const { sut, addTransactionRepository } = make_sut() 
+
+		const account = Object.assign({id: 'another-id'}, data)
+
+		jest.spyOn(addTransactionRepository, 'add').mockReturnValue(Promise.resolve(account))
+
+		const result = await sut.debitFromAccount(data)
+		expect(result).toEqual(account)
+	})
 })
