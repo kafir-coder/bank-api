@@ -90,4 +90,20 @@ describe('CreateAccount Service', () => {
 		await sut.createAccountService(data)
 		expect(createAccountRepository.create).toHaveBeenCalledTimes(1)
 	})
+
+	it('should call CreateAccountRepository.create with proper argument', async () => {
+		
+		const data: AddAccountParams = {
+			owner_name: 'Caio Tony',
+			cpf: '1234567890', 
+			balance: 123.5
+		}
+		const { sut, createAccountRepository, getAccountRepository} = make_sut() 
+
+		jest.spyOn(getAccountRepository, 'existsByCPF').mockReturnValue(Promise.resolve(false))
+		jest.spyOn(createAccountRepository, 'create')
+
+		await sut.createAccountService(data)
+		expect(createAccountRepository.create).toHaveBeenCalledWith(data)
+	})
 })
