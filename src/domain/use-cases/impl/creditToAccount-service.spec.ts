@@ -1,5 +1,6 @@
-import { IReadAccountRepository } from 'src/domain/models/contracts/readAccount-repository'
-import { IWriteTransactionRepository } from 'src/domain/models/contracts/writeTransaction-repository'
+import { IReadAccountRepository } from '../../models/contracts/readAccount-repository'
+import { IWriteTransactionRepository } from '../../models/contracts/writeTransaction-repository'
+import { AddTransactionParams } from '../../models/transaction'
 import { ICreditToAccountService } from '../creditToAccount-service'
 import { CreditToAccountServiceImpl } from './creditToAccount-service-impl'
 import { ReadAccountRepositoryMock } from './mocks/createAccount-service'
@@ -25,3 +26,22 @@ const make_sut = (): SutTypes => {
 		writeTransactionRepository
 	}
 }
+
+
+describe('CreditToAccount usecase', () => {
+
+	it('should call readAccountRepository.exists', async () => {
+
+		const data: AddTransactionParams = {
+			account_id: 'some-id',
+			amount: 20.4, 
+			type: 'debit'
+		}
+		const { sut, readAccountRepository } = make_sut()
+
+		jest.spyOn(readAccountRepository, 'exists')
+		await sut.creditToAccount(data)
+
+		expect(readAccountRepository.exists).toHaveBeenCalledTimes(1)
+	})
+})
