@@ -21,7 +21,7 @@ export class DebitFromAccountServiceImpl implements IDebitFromAccountService {
 
 		if (balance-value < 0) return null
 
-		await this.addTransactionRepository.add(data)
-		return Object.assign({id: 'some-id'}, data)
+		const transaction = await this.addTransactionRepository.add(data)
+		return transaction
 	}
 }
