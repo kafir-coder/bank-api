@@ -14,7 +14,8 @@ export class DebitFromAccountServiceImpl implements IDebitFromAccountService {
 	async debitFromAccount(data: AddTransactionParams): Promise<TransactionModel | null> {
 		
 		const { account_id } = data
-		this.getAccountRepository.exists(account_id)
+		const account_exists = await this.getAccountRepository.exists(account_id)
+		if (!account_exists) return null
 		return Object.assign({id: 'some-id'}, data)
 	}
 }
