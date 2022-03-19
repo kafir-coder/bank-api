@@ -73,4 +73,34 @@ describe('CreditToAccount usecase', () => {
 
 		expect(result).toBe(null)
 	})
+
+	it('should call WriteTransactionRepository.add', async () => {
+		const data: AddTransactionParams = {
+			account_id: 'some-id',
+			amount: 20.4, 
+			type: 'debit'
+		}
+		const { sut, writeTransactionRepository } = make_sut()
+
+		jest.spyOn(writeTransactionRepository, 'add')
+		await sut.creditToAccount(data)
+
+		expect(writeTransactionRepository.add).toHaveBeenCalledTimes(1)
+
+	})
+
+	it('should call WriteTransactionRepository.add with proper argument', async () => {
+		const data: AddTransactionParams = {
+			account_id: 'some-id',
+			amount: 20.4, 
+			type: 'debit'
+		}
+		const { sut, writeTransactionRepository } = make_sut()
+
+		jest.spyOn(writeTransactionRepository, 'add')
+		await sut.creditToAccount(data)
+
+		expect(writeTransactionRepository.add).toHaveBeenCalledTimes(1)
+
+	})
 })
