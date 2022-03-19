@@ -70,4 +70,17 @@ describe('DebitFromAccount usecase', () => {
 		expect(result).toBe(null)
 	})
 
+	it('should call AccountRepository.getBalance', async () => {
+		const data: AddTransactionParams = {
+			account_id: 'some-id',
+			value: 20.4, 
+			type: 'debit'
+		}
+		const { sut, getAccountRepository } = make_sut() 
+
+		jest.spyOn(getAccountRepository, 'getBalance')
+
+		await sut.debitFromAccount(data)
+		expect(getAccountRepository.getBalance).toHaveBeenCalledTimes(1)
+	})
 })
