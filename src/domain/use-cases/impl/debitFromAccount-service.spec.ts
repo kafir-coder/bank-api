@@ -1,28 +1,31 @@
-import { IAddTransactionRepository } from '../../models/contracts/writeTransaction-repository'
-import { IGetAccountRepository } from '../../models/contracts/readAccount-repository'
+import { IWriteTransactionRepository } from '../../models/contracts/writeTransaction-repository'
+import { IReadAccountRepository } from '../../models/contracts/readAccount-repository'
 import { AddTransactionParams } from '../../models/transaction'
 import { IDebitFromAccountService } from '../debitFromAccount-service'
 import { DebitFromAccountServiceImpl } from './debitFromAccount-service-impl'
-import { GetAccountRepositoryMock } from './mocks/createAccount-service'
-import { AddTransactionRepositoryMock } from './mocks/debitFromAccount-service'
+import { ReadAccountRepositoryMock, WriteAccountRepositoryMock } from './mocks/createAccount-service'
+import { WriteTransactionRepositoryMock } from './mocks/debitFromAccount-service'
+import { IWriteAccountRepository } from '../../models/contracts/writeAccount-repository'
 
 
 type SutTypes = {
 	sut: IDebitFromAccountService
-	getAccountRepository: IGetAccountRepository
-	addTransactionRepository: IAddTransactionRepository
+	readAccountRepository: IReadAccountRepository
+	writeTransactionRepository: IWriteTransactionRepository,
+	writeAccountRepository: IWriteAccountRepository
 }
 const make_sut = (): SutTypes => {
-	const getAccountRepository = new GetAccountRepositoryMock()
-	const addTransactionRepository = new AddTransactionRepositoryMock()
-
+	const readAccountRepository = new ReadAccountRepositoryMock()
+	const writeTransactionRepository = new WriteTransactionRepositoryMock()
+	const writeAccountRepository = new WriteAccountRepositoryMock()
 	const sut = new DebitFromAccountServiceImpl(
-		getAccountRepository,
-		addTransactionRepository
+		readAccountRepository,
+		writeTransactionRepository, 
+		writeAccountRepository
 	)
 
 	return {
-		sut, getAccountRepository, addTransactionRepository
+		sut, readAccountRepository, writeTransactionRepository, writeAccountRepository
 	}
 }  
 describe('DebitFromAccount usecase', () => {
@@ -33,12 +36,12 @@ describe('DebitFromAccount usecase', () => {
 			value: 20.4, 
 			type: 'debit'
 		}
-		const { sut, getAccountRepository } = make_sut() 
+		const { sut, readAccountRepository } = make_sut() 
 
-		jest.spyOn(getAccountRepository, 'exists')
+		jest.spyOn(readAccountRepository, 'exists')
 
 		await sut.debitFromAccount(data)
-		expect(getAccountRepository.exists).toHaveBeenCalledTimes(1)
+		expect(readAccountRepository.exists).toHaveBeenCalledTimes(1)
 	})
 
 	it('should call AccountRepository.exists with proper argument',async () => {
@@ -47,12 +50,12 @@ describe('DebitFromAccount usecase', () => {
 			value: 20.4, 
 			type: 'debit'
 		}
-		const { sut, getAccountRepository } = make_sut() 
+		const { sut, readAccountRepository } = make_sut() 
 
-		jest.spyOn(getAccountRepository, 'exists')
+		jest.spyOn(readAccountRepository, 'exists')
 
 		await sut.debitFromAccount(data)
-		expect(getAccountRepository.exists).toHaveBeenCalledWith(data.account_id)
+		expect(readAccountRepository.exists).toHaveBeenCalledWith(data.account_id)
 	})
 
 	it('should return null if AccountRepository.exists returns false', async () => {
@@ -61,9 +64,9 @@ describe('DebitFromAccount usecase', () => {
 			value: 20.4, 
 			type: 'debit'
 		}
-		const { sut, getAccountRepository } = make_sut() 
+		const { sut, readAccountRepository } = make_sut() 
 
-		jest.spyOn(getAccountRepository, 'exists').mockReturnValue(Promise.resolve(false))
+		jest.spyOn(readAccountRepository, 'exists').mockReturnValue(Promise.resolve(false))
 
 		const result = await sut.debitFromAccount(data)
 
@@ -76,12 +79,12 @@ describe('DebitFromAccount usecase', () => {
 			value: 20.4, 
 			type: 'debit'
 		}
-		const { sut, getAccountRepository } = make_sut() 
+		const { sut, readAccountRepository } = make_sut() 
 
-		jest.spyOn(getAccountRepository, 'getBalance')
+		jest.spyOn(readAccountRepository, 'getBalance')
 
 		await sut.debitFromAccount(data)
-		expect(getAccountRepository.getBalance).toHaveBeenCalledTimes(1)
+		expect(readAccountRepository.getBalance).toHaveBeenCalledTimes(1)
 	})
 
 	it('should call AccountRepository.getBalance with proper argument', async () => {
@@ -90,12 +93,12 @@ describe('DebitFromAccount usecase', () => {
 			value: 20.4, 
 			type: 'debit'
 		}
-		const { sut, getAccountRepository } = make_sut() 
+		const { sut, readAccountRepository } = make_sut() 
 
-		jest.spyOn(getAccountRepository, 'getBalance')
+		jest.spyOn(readAccountRepository, 'getBalance')
 
 		await sut.debitFromAccount(data)
-		expect(getAccountRepository.getBalance).toHaveBeenCalledWith(data.account_id)
+		expect(readAccountRepository.getBalance).toHaveBeenCalledWith(data.account_id)
 	})
 
 	it('should return null if difference between balance and value to debit be negative', async () => {
@@ -104,28 +107,29 @@ describe('DebitFromAccount usecase', () => {
 			value: 20.4, 
 			type: 'debit'
 		}
-		const { sut, getAccountRepository } = make_sut() 
+		const { sut, readAccountRepository } = make_sut() 
 
 		// returns a value less than data.value
-		jest.spyOn(getAccountRepository, 'getBalance').mockReturnValue(Promise.resolve(10.4))
+		jest.spyOn(readAccountRepository, 'getBalance').mockReturnValue(Promise.resolve(10.4))
 
 		const result = await sut.debitFromAccount(data)
 		expect(result).toBe(null)
 	})
 
+	
 	it('should call TransactionRepository.add', async () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
 			value: 20.4, 
 			type: 'debit'
 		}
-		const { sut, addTransactionRepository } = make_sut() 
+		const { sut, writeTransactionRepository } = make_sut() 
 
 		// returns a value less than data.value
-		jest.spyOn(addTransactionRepository, 'add')
+		jest.spyOn(writeTransactionRepository, 'add')
 
 		await sut.debitFromAccount(data)
-		expect(addTransactionRepository.add).toHaveBeenCalledTimes(1)
+		expect(writeTransactionRepository.add).toHaveBeenCalledTimes(1)
 	})
 
 	it('should call TransactionRepository.add with proper argument', async () => {
@@ -134,13 +138,13 @@ describe('DebitFromAccount usecase', () => {
 			value: 20.4, 
 			type: 'debit'
 		}
-		const { sut, addTransactionRepository } = make_sut() 
+		const { sut, writeTransactionRepository } = make_sut() 
 
 		// returns a value less than data.value
-		jest.spyOn(addTransactionRepository, 'add')
+		jest.spyOn(writeTransactionRepository, 'add')
 
 		await sut.debitFromAccount(data)
-		expect(addTransactionRepository.add).toHaveBeenCalledWith(data)
+		expect(writeTransactionRepository.add).toHaveBeenCalledWith(data)
 	})
 
 	it('should return what TransactionRepository.add returns', async () => {
@@ -150,11 +154,11 @@ describe('DebitFromAccount usecase', () => {
 			value: 20.4, 
 			type: 'debit'
 		}
-		const { sut, addTransactionRepository } = make_sut() 
+		const { sut, writeTransactionRepository } = make_sut() 
 
 		const account = Object.assign({id: 'another-id'}, data)
 
-		jest.spyOn(addTransactionRepository, 'add').mockReturnValue(Promise.resolve(account))
+		jest.spyOn(writeTransactionRepository, 'add').mockReturnValue(Promise.resolve(account))
 
 		const result = await sut.debitFromAccount(data)
 		expect(result).toEqual(account)

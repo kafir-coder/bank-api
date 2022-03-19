@@ -1,14 +1,16 @@
 import {Adapter, Service} from '@tsclean/core'
-import { ADD_TRANSACTION_REPOSITORY, IAddTransactionRepository } from '../../models/contracts/writeTransaction-repository'
-import { GET_ACCOUNT_REPOSITORY, IGetAccountRepository } from '../../models/contracts/readAccount-repository'
+import { IWriteTransactionRepository, WRITE_TRANSACTION_REPOSITORY } from '../../models/contracts/writeTransaction-repository'
+import { IReadAccountRepository, READ_ACCOUNT_REPOSITORY } from '../../models/contracts/readAccount-repository'
 import { AddTransactionParams, TransactionModel } from '../../models/transaction'
 import {IDebitFromAccountService} from '../../use-cases/debitFromAccount-service'
+import { IWriteAccountRepository, WRITE_ACCOUNT_REPOSITORY } from '../../models/contracts/writeAccount-repository'
 
 @Service()
 export class DebitFromAccountServiceImpl implements IDebitFromAccountService {
 	constructor(
-		@Adapter(GET_ACCOUNT_REPOSITORY) private readonly getAccountRepository: IGetAccountRepository,
-		@Adapter(ADD_TRANSACTION_REPOSITORY) private readonly addTransactionRepository: IAddTransactionRepository
+		@Adapter(READ_ACCOUNT_REPOSITORY) private readonly getAccountRepository: IReadAccountRepository,
+		@Adapter(WRITE_TRANSACTION_REPOSITORY) private readonly addTransactionRepository: IWriteTransactionRepository,
+		@Adapter(WRITE_ACCOUNT_REPOSITORY) private readonly addAccountRepository: IWriteAccountRepository,
 	) {}
 
 	async debitFromAccount(data: AddTransactionParams): Promise<TransactionModel | null> {
