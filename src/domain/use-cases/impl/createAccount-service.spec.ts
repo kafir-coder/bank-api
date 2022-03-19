@@ -1,4 +1,4 @@
-import { AddAccountParams } from 'src/domain/models/account'
+import { AccountModel, AddAccountParams } from 'src/domain/models/account'
 import { ICreateAccountRepository } from 'src/domain/models/contracts/createAccount-repository'
 import { IGetAccountRepository } from 'src/domain/models/contracts/getAccount-repository'
 import { ICreateAccountService } from '../createAccount-service'
@@ -27,11 +27,10 @@ const make_sut = (): SutTypes => {
 		getAccountRepository
 	}
 }
+
+const make_account = (data: AddAccountParams): AccountModel => Object.assign({id: 'some_id'}, data)
 describe('CreateAccount Service', () => {
   
-	afterEach(() => {
-		jest.clearAllMocks()
-	})
 	it('should call GetAccountRepository.existsByCPF', async () => {
 
 		const data: AddAccountParams = {
@@ -114,7 +113,7 @@ describe('CreateAccount Service', () => {
 			balance: 123.5
 		}
 
-		const account = Object.assign({id: 'some-id'}, data)
+		const account = make_account(data)
 		const { sut, createAccountRepository, getAccountRepository } = make_sut() 
 		
 		jest.spyOn(getAccountRepository, 'existsByCPF').mockReturnValue(Promise.resolve(false))
@@ -133,7 +132,7 @@ describe('CreateAccount Service', () => {
 			balance: 123.5
 		}
 	
-		const account = Object.assign({id: 'some_id'}, data)
+		const account = make_account(data)
 		const { sut, getAccountRepository } = make_sut() 
 		
 		jest.spyOn(getAccountRepository, 'existsByCPF').mockReturnValue(Promise.resolve(false))
