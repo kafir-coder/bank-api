@@ -97,4 +97,19 @@ describe('DebitFromAccount usecase', () => {
 		await sut.debitFromAccount(data)
 		expect(getAccountRepository.getBalance).toHaveBeenCalledWith(data.account_id)
 	})
+
+	it('should return null if difference between balance and value to debit be negative', async () => {
+		const data: AddTransactionParams = {
+			account_id: 'some-id',
+			value: 20.4, 
+			type: 'debit'
+		}
+		const { sut, getAccountRepository } = make_sut() 
+
+		// returns a value less than data.value
+		jest.spyOn(getAccountRepository, 'getBalance').mockReturnValue(Promise.resolve(10.4))
+
+		const result = await sut.debitFromAccount(data)
+		expect(result).toBe(null)
+	})
 })
