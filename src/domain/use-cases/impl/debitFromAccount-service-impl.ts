@@ -13,11 +13,13 @@ export class DebitFromAccountServiceImpl implements IDebitFromAccountService {
 
 	async debitFromAccount(data: AddTransactionParams): Promise<TransactionModel | null> {
 		
-		const { account_id } = data
+		const { account_id, value } = data
 		const account_exists = await this.getAccountRepository.exists(account_id)
 		if (!account_exists) return null
 
-		await this.getAccountRepository.getBalance(account_id)
+		const balance = await this.getAccountRepository.getBalance(account_id)
+
+		if (balance-value < 0) return null
 		return Object.assign({id: 'some-id'}, data)
 	}
 }
