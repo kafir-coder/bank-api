@@ -194,4 +194,22 @@ describe('DebitFromAccount usecase', () => {
 
 		expect(writeAccountRepository.update).toHaveBeenCalledTimes(1)
 	})
+
+	it('should call AccountRepository.update with proper arguments', async () => {
+		const data: AddTransactionParams = {
+			account_id: 'some-id',
+			value: 20.4, 
+			type: 'debit'
+		}
+		const { sut, writeAccountRepository, readAccountRepository } = make_sut() 
+
+		// returns a value less than data.value
+		jest.spyOn(writeAccountRepository, 'update')
+
+		const balance = await readAccountRepository.getBalance(data.account_id)
+		await sut.debitFromAccount(data)
+
+		const difference = balance-data.value
+		expect(writeAccountRepository.update).toHaveBeenCalledWith({balance: difference})
+	})
 })
