@@ -127,4 +127,19 @@ describe('DebitFromAccount usecase', () => {
 		await sut.debitFromAccount(data)
 		expect(addTransactionRepository.add).toHaveBeenCalledTimes(1)
 	})
+
+	it('should call TransactionRepository.add with proper argument', async () => {
+		const data: AddTransactionParams = {
+			account_id: 'some-id',
+			value: 20.4, 
+			type: 'debit'
+		}
+		const { sut, addTransactionRepository } = make_sut() 
+
+		// returns a value less than data.value
+		jest.spyOn(addTransactionRepository, 'add')
+
+		await sut.debitFromAccount(data)
+		expect(addTransactionRepository.add).toHaveBeenCalledWith(data)
+	})
 })
