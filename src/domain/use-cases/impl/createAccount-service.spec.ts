@@ -126,4 +126,21 @@ describe('CreateAccount Service', () => {
 		expect(result).toEqual(account)
 	})
 
+	it('should return an AccountModel object', async () => {
+		const data: AddAccountParams = {
+			owner_name: 'Caio Tony',
+			cpf: '1234567890', 
+			balance: 123.5
+		}
+	
+		const account = Object.assign({id: 'some_id'}, data)
+		const { sut, getAccountRepository } = make_sut() 
+		
+		jest.spyOn(getAccountRepository, 'existsByCPF').mockReturnValue(Promise.resolve(false))
+		
+		const result = await sut.createAccountService(data)
+	
+		expect(result).toEqual(account)
+	})
+
 })
