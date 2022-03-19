@@ -93,14 +93,13 @@ describe('CreditToAccount usecase', () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
 			amount: 20.4, 
-			type: 'debit'
+			type: 'credit'
 		}
 		const { sut, writeTransactionRepository } = make_sut()
 
 		jest.spyOn(writeTransactionRepository, 'add')
 		await sut.creditToAccount(data)
 
-		expect(writeTransactionRepository.add).toHaveBeenCalledTimes(1)
-
+		expect(writeTransactionRepository.add).toHaveBeenCalledWith(data)
 	})
 })
