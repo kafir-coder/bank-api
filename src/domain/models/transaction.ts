@@ -1,7 +1,7 @@
 export type TransactionModel = {
     id: string
-    accountId: string
-    value: number
+    account_id: string
+    amount: number
     type: string // enum('debit', 'credit')
 }
 
