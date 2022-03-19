@@ -159,4 +159,17 @@ describe('DebitFromAccount usecase', () => {
 		const result = await sut.debitFromAccount(data)
 		expect(result).toEqual(account)
 	})
+
+	it('should only accept debit as Transaction type', async () => {
+		const data: AddTransactionParams = {
+			account_id: 'some-id',
+			value: 20.4, 
+			type: 'credit'
+		}
+		const { sut } = make_sut()
+
+		const result = await sut.debitFromAccount(data)
+
+		expect(result).toBe(null)
+	})
 })
