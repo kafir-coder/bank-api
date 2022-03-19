@@ -13,11 +13,9 @@ export class DebitFromAccountServiceImpl implements IDebitFromAccountService {
 		@Adapter(WRITE_ACCOUNT_REPOSITORY) private readonly writeAccountRepository: IWriteAccountRepository,
 	) {}
 
-	async debitFromAccount(data: AddTransactionParams): Promise<TransactionModel | null> {
+	async debitFromAccount(data: Omit<AddTransactionParams, 'type'>): Promise<TransactionModel | null> {
 		
-		const { account_id, value, type } = data
-
-		if (type !== 'debit') return null
+		const { account_id, value } = data
 		
 		const account_exists = await this.readAccountRepository.exists(account_id)
 		if (!account_exists) return null
@@ -26,7 +24,7 @@ export class DebitFromAccountServiceImpl implements IDebitFromAccountService {
 
 		if (balance-value < 0) return null
 
-		const transaction = await this.writeTransactionRepository.add(data)
+		const transaction = await this.writeTransactionRepository.add({...data, type: 'debit'})
 		return transaction
 	}
 }
