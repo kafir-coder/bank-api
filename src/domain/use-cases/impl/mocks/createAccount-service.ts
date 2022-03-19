@@ -12,4 +12,11 @@ export class GetAccountRepositoryMock implements IGetAccountRepository {
 	async existsByCPF(cpf: string): Promise<boolean> {
 		return typeof cpf === 'string'
 	}
+	async exists(account_id: string): Promise<boolean> {
+		return true
+	}
+
+	async getBalance(account_id: string): Promise<number> {
+		return 24.2
+	}
 }
