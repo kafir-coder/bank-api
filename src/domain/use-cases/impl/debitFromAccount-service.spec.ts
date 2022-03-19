@@ -164,19 +164,6 @@ describe('DebitFromAccount usecase', () => {
 		expect(result).toEqual(account)
 	})
 
-	it('should only accept debit as Transaction type', async () => {
-		const data: AddTransactionParams = {
-			account_id: 'some-id',
-			value: 20.4, 
-			type: 'credit'
-		}
-		const { sut } = make_sut()
-
-		const result = await sut.debitFromAccount(data)
-
-		expect(result).toBe(null)
-	})
-
 	it('should return a TransactionModel object', async () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
@@ -190,5 +177,21 @@ describe('DebitFromAccount usecase', () => {
 		const result = await sut.debitFromAccount(data)
 	
 		expect(result).toStrictEqual(transaction)
+	})
+
+	it('should call AccountRepository.update', async () => {
+		const data: AddTransactionParams = {
+			account_id: 'some-id',
+			value: 20.4, 
+			type: 'debit'
+		}
+		const { sut, writeAccountRepository } = make_sut() 
+
+		// returns a value less than data.value
+		jest.spyOn(writeAccountRepository, 'update')
+
+		await sut.debitFromAccount(data)
+
+		expect(writeAccountRepository.update).toHaveBeenCalledTimes(1)
 	})
 })
