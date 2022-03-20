@@ -2,7 +2,7 @@
 //@ts-nocheck
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import mongoose from 'mongoose'
-const {connect} = mongoose
+const {connect, ObjectId} = mongoose
 import {AddAccountParams} from '../../../../../domain/models/account'
 import {AccountModelSchema} from './models/account'
 import {AccountMongooseRepositoryAdapter} from './account-mongoose-repository-adapter'
@@ -55,6 +55,21 @@ describe('Account mongo adapter', () => {
 		const inexistent_cpf = 'some_random_inexistent_cpf'
 		const willExists = await sut.existsByCPF(existent_cpf)
 		const willNexists = await sut.existsByCPF(inexistent_cpf)
+		expect(willNexists && willExists).toBe(false)
+	})
+
+	it('should check the existence of a account by its id', async () => {
+		const sut = make_sut()
+
+		const get_id = (async function() {
+			const {_id} = await AccountModelSchema.findOne()
+			return _id.toHexString()
+		}())
+		console.log((await get_id))
+		const existent_account_id = await get_id
+		const inexistent_account_id = '123456789012345678901234'
+		const willExists = await sut.exists(existent_account_id)
+		const willNexists = await sut.exists(inexistent_account_id)
 		expect(willNexists && willExists).toBe(false)
 	})
 })
