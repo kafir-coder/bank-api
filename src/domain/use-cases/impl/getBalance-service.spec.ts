@@ -21,4 +21,13 @@ const make_sut = (): SutTypes => {
 
 describe('getBalance usecase', () => {
   
+	it('should call AccountRepository.getBalance', async () => {
+		const {sut, readAccountRepository} = make_sut()
+
+		jest.spyOn(readAccountRepository, 'getBalance')
+
+		await sut.getBalance('some-id')
+
+		expect(readAccountRepository.getBalance).toHaveBeenCalledTimes(1)
+	})
 })
