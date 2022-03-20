@@ -47,4 +47,14 @@ describe('Account mongo adapter', () => {
 
 		expect(sut.create(mockAccount)).rejects.toThrowError()
 	})
+
+	it('should check the existence of a account by cpf field', async () => {
+		const sut = make_sut()
+
+		const existent_cpf = '123456'
+		const inexistent_cpf = 'some_random_inexistent_cpf'
+		const willExists = await sut.existsByCPF(existent_cpf)
+		const willNexists = await sut.existsByCPF(inexistent_cpf)
+		expect(willNexists && willExists).toBe(false)
+	})
 })
