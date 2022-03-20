@@ -9,8 +9,8 @@ export class GetBalanceServiceImpl implements IGetBalanceService {
 	) {
 	}
 
-	async getBalance(account_id: string): Promise<number> {
-		this.readAccountRepository.getBalance(account_id)
-		return 20.2
+	async getBalance(account_id: string): Promise<number | null> {
+		const balance = await this.readAccountRepository.getBalance(account_id)
+		return balance
 	}
 }

@@ -209,7 +209,8 @@ describe('DebitFromAccount usecase', () => {
 		const balance = await readAccountRepository.getBalance(data.account_id)
 		await sut.debitFromAccount(data)
 
-		const difference = balance-data.amount
-		expect(writeAccountRepository.update).toHaveBeenCalledWith({balance: difference})
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const difference = balance!-data.amount
+		expect(writeAccountRepository.update).toHaveBeenCalledWith('some-id', {balance: difference})
 	})
 })

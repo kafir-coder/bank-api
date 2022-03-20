@@ -4,3 +4,6 @@ package-lock.json
 
 build
 
+globalConfig.json
+
+jest-mongodb-config.js
