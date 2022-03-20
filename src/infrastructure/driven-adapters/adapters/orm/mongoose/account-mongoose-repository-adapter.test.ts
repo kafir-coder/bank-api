@@ -19,6 +19,9 @@ describe('Account mongo adapter', () => {
 		})
 	})
 
+	beforeEach(async () => {
+		await AccountModelSchema.deleteMany({})
+	})
 	afterAll(async () => {
 		await mongoose.connection.close()
 	})
@@ -44,32 +47,54 @@ describe('Account mongo adapter', () => {
 
 		const cpf = '123456'
 		const mockAccount: AddAccountParams = {owner_name: 'John', cpf, balance: 0}
+		await AccountModelSchema.create(mockAccount)
 
-		expect(sut.create(mockAccount)).rejects.toThrowError()
+		class MongoServerError extends Error {
+			constructor() {
+				// eslint-disable-next-line quotes
+				super(`E11000 duplicate key error dup key: { : "${cpf}" }`)
+				this.name = 'MongoServerError'
+			}
+		}
+		try {
+			await sut.create(mockAccount)
+		} catch (error) {
+			expect(error).toEqual(new MongoServerError())
+		}
+		
 	})
 
 	it('should check the existence of a account by cpf field', async () => {
 		const sut = make_sut()
 
+		const cpf = '123456'
+		const mockAccount: AddAccountParams = {owner_name: 'John', cpf, balance: 0}
+		await AccountModelSchema.create(mockAccount)
+
 		const existent_cpf = '123456'
 		const inexistent_cpf = 'some_random_inexistent_cpf'
 		const willExists = await sut.existsByCPF(existent_cpf)
 		const willNexists = await sut.existsByCPF(inexistent_cpf)
-		expect(willNexists && willExists).toBe(false)
+		expect(willNexists).toBe(false)
+		expect(willExists).toBe(true)
 	})
 
 	it('should check the existence of a account by its id', async () => {
 		const sut = make_sut()
 
+		const cpf = '123456'
+		const mockAccount: AddAccountParams = {owner_name: 'John', cpf, balance: 0}
+		await AccountModelSchema.create(mockAccount)
+
 		const get_id = (async function() {
-			const {_id} = await AccountModelSchema.findOne()
-			return _id.toHexString()
+			const account = await AccountModelSchema.findOne()
+			return account?._id.toHexString()
 		}())
-		console.log((await get_id))
 		const existent_account_id = await get_id
 		const inexistent_account_id = '123456789012345678901234'
 		const willExists = await sut.exists(existent_account_id)
 		const willNexists = await sut.exists(inexistent_account_id)
-		expect(willNexists && willExists).toBe(false)
+		expect(willNexists).toBe(false)
+		expect(willExists).toBe(true)
 	})
 })
