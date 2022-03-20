@@ -24,7 +24,8 @@ export class AccountMongooseRepositoryAdapter implements IWriteAccountRepository
 		return (await AccountModelSchema.exists({cpf})) !== null ? true: false
 	}
 	async getBalance(account_id: string): Promise<number | null> {
-		return 23.4
+		const account = await AccountModelSchema.findById(account_id)
+		return account?.balance || null
 	}
 	async update(data: Partial<AddAccountParams>): Promise<AccountModel> {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
