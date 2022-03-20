@@ -22,7 +22,8 @@ export class DebitFromAccountServiceImpl implements IDebitFromAccountService {
 
 		const balance = await this.readAccountRepository.getBalance(account_id)
 
-		const difference = balance-amount
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const difference = balance!-amount
 		if (difference < 0) return null // conta não tem dinheiro suficiente
 
 		const transaction = await this.writeTransactionRepository.add({...data, type: 'debit'})
