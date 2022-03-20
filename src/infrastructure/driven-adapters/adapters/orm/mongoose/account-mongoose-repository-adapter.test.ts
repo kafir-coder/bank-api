@@ -110,4 +110,19 @@ describe('Account mongo adapter', () => {
 
 		expect(result).toBe(balance)
 	})
+
+	it('should update the account balance', async () => {
+		const sut = make_sut()
+
+		const cpf = '123456'
+		const balance = 10000
+		const new_balance = 2000
+		const mockAccount: AddAccountParams = {owner_name: 'John', cpf, balance}
+		const  { id } = await AccountModelSchema.create(mockAccount)
+
+		await sut.update(id, {balance: new_balance})
+		const account = await AccountModelSchema.findOne()
+
+		expect(account.balance).toBe(new_balance)
+	})
 })
