@@ -163,5 +163,5 @@ describe('CreditToAccount usecase', () => {
 
 		await sut.creditToAccount(data)
 		expect(readAccountRepository.getBalance).toHaveBeenCalledWith(data.account_id)
-	})
+	})	
 })
