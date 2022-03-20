@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import { IReadAccountRepository } from 'src/domain/models/contracts/readAccount-repository'
 import { IWriteAccountRepository } from 'src/domain/models/contracts/writeAccount-repository'
 import {AccountModel, AddAccountParams} from '../../../../../domain/models/account'
@@ -15,7 +16,9 @@ export class AccountMongooseRepositoryAdapter implements IWriteAccountRepository
 		}
 	}
 	async exists(account_id: string): Promise<boolean> {
-		return true
+		return (await AccountModelSchema.exists({
+			_id: new mongoose.mongo.ObjectId(account_id)
+		})) !== null ? true: false
 	}
 	async existsByCPF(cpf: string): Promise<boolean> {
 		return (await AccountModelSchema.exists({cpf})) !== null ? true: false
