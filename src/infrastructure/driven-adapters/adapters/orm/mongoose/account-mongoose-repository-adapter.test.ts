@@ -97,4 +97,17 @@ describe('Account mongo adapter', () => {
 		expect(willNexists).toBe(false)
 		expect(willExists).toBe(true)
 	})
+
+	it('should get the account balance', async () => {
+		const sut = make_sut()
+
+		const cpf = '123456'
+		const balance = 10000
+		const mockAccount: AddAccountParams = {owner_name: 'John', cpf, balance}
+		const  { id } = await AccountModelSchema.create(mockAccount)
+
+		const result = await sut.getBalance(id)
+
+		expect(result).toBe(balance)
+	})
 })
