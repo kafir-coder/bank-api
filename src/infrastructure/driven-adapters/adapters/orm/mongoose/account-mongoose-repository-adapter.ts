@@ -28,8 +28,11 @@ export class AccountMongooseRepositoryAdapter implements IWriteAccountRepository
 		return account?.balance || null
 	}
 	async update(id: string, data: Partial<AddAccountParams>): Promise<AccountModel> {
+
+		const update_result = await AccountModelSchema.updateOne({_id: new mongoose.mongo.ObjectId(id)}, data)
+
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		//@ts-ignore
-		return {...data, id: '22'}
+		return update_result.modifiedCount > 0 ? {...data, id: '22'} : null
 	}
 }
