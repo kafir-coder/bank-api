@@ -180,4 +180,23 @@ describe('CreditToAccount usecase', () => {
 
 		expect(writeAccountRepository.update).toHaveBeenCalledTimes(1)
 	})
+
+	it('should call AccountRepository.update with proper arguments', async () => {
+		const data: AddTransactionParams = {
+			account_id: 'some-id',
+			amount: 20.4, 
+			type: 'debit'
+		}
+		const { sut, writeAccountRepository, readAccountRepository } = make_sut() 
+
+		// returns a amount less than data.amount
+		jest.spyOn(writeAccountRepository, 'update')
+
+		const balance = await readAccountRepository.getBalance(data.account_id)
+		await sut.creditToAccount(data)
+
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const sum = balance!+data.amount
+		expect(writeAccountRepository.update).toHaveBeenCalledWith('some-id', {balance: sum})
+	})
 })
