@@ -211,6 +211,6 @@ describe('DebitFromAccount usecase', () => {
 
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const difference = balance!-data.amount
-		expect(writeAccountRepository.update).toHaveBeenCalledWith({balance: difference})
+		expect(writeAccountRepository.update).toHaveBeenCalledWith('some-id', {balance: difference})
 	})
 })

@@ -28,7 +28,7 @@ export class DebitFromAccountServiceImpl implements IDebitFromAccountService {
 
 		const transaction = await this.writeTransactionRepository.add({...data, type: 'debit'})
 
-		await this.writeAccountRepository.update({balance: difference})
+		await this.writeAccountRepository.update(account_id,{balance: difference})
 		return transaction
 	}
 }

@@ -6,7 +6,7 @@ export class WriteAccountRepositoryMock implements IWriteAccountRepository {
 	async create(data: AddAccountParams): Promise<AccountModel> {
 		return Object.assign({id: 'some_id'}, data)
 	}
-	async update(data: Partial<AddAccountParams>): Promise<AccountModel> {
+	async update(id: string, data: Partial<AddAccountParams>): Promise<AccountModel> {
 		return Object.assign({id: 'some_id'}, data) as unknown as AccountModel
 	}
 }
