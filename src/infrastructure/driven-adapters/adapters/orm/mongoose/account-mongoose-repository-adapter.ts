@@ -5,7 +5,8 @@ import {AccountModelSchema} from './models/account'
 
 export class AccountMongooseRepositoryAdapter implements IWriteAccountRepository, IReadAccountRepository{
 	async create(data: AddAccountParams): Promise<AccountModel> {
-		const {balance, cpf, owner_name, _id} = await AccountModelSchema.create(data)
+		const account = await AccountModelSchema.create(data)
+		const {balance, cpf, owner_name, _id} = account
 		return {
 			id: _id.toString(),
 			balance, 
