@@ -18,7 +18,7 @@ export class AccountMongooseRepositoryAdapter implements IWriteAccountRepository
 		return true
 	}
 	async existsByCPF(cpf: string): Promise<boolean> {
-		return true
+		return (await AccountModelSchema.exists({cpf})) !== null ? true: false
 	}
 	async getBalance(account_id: string): Promise<number | null> {
 		return 23.4
