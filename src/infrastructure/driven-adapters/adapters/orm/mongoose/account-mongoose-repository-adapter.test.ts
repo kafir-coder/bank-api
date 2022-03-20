@@ -38,4 +38,13 @@ describe('Account mongo adapter', () => {
 		expect(insertedAccount.cpf).toBe(wasInserted?.cpf)
 		expect(insertedAccount.balance).toBe(wasInserted?.balance)
 	})
+
+	it('should throw error if account already exists', async () => {
+		const sut = make_sut()
+
+		const cpf = '123456'
+		const mockAccount: AddAccountParams = {owner_name: 'John', cpf, balance: 0}
+
+		expect(sut.create(mockAccount)).rejects.toThrowError()
+	})
 })
