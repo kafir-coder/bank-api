@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint src --ext .ts",
-    "test": "jest --passWithNoTests",
-    "test:watch": "jest --watch",
+    "test": "jest --passWithNoTests --runInBand",
+    "test:watch": "jest --runInBand --watch",
     "prebuild": "rimraf build/",
     "build": "npm run prebuild && tsc",
     "start": "node build/src/index"
@@ -45,6 +45,7 @@
   "dependencies": {
     "@tsclean/core": "^1.7.0",
     "mongodb": "^4.4.1",
+    "mongoose": "^6.2.7",
     "rimraf": "^3.0.2"
   }
 }
