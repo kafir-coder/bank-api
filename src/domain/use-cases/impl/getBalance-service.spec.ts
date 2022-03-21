@@ -31,6 +31,17 @@ describe('getBalance usecase', () => {
 		expect(readAccountRepository.getBalance).toHaveBeenCalledTimes(1)
 	})
 
+	it('should call AccountRepository.exists',async () => {
+		const account_id = 'some-id'
+
+		const { sut, readAccountRepository } = make_sut() 
+
+		jest.spyOn(readAccountRepository, 'exists')
+
+		await sut.getBalance(account_id)
+		expect(readAccountRepository.exists).toHaveBeenCalledTimes(1)
+	})
+
 	it('should call AccountRepository.getBalance with proper argument', async () => {
 		const {sut, readAccountRepository} = make_sut()
 
