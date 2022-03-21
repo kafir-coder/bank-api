@@ -4,6 +4,8 @@ import { AddTransactionParams, TransactionModel } from '../../../../../domain/mo
 
 export class TransactionMongooseRepositoryAdapter implements IWriteTransactionRepository{
 	async add(data: AddTransactionParams): Promise<TransactionModel> {
-		return {...data, id: 'some-id'}
+		const transaction =	await TransactionModelSchema.create(data)
+		const {_id, ...rest} = transaction.toJSON()
+		return Object.assign({id: _id}, rest)
 	}
 }
