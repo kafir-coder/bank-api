@@ -4,6 +4,7 @@ import { IReadAccountRepository } from 'src/domain/models/contracts/readAccount-
 import { ICreateAccountService } from '../createAccount-service'
 import { CreateAccountServiceImpl } from './createAccount-service-impl'
 import { WriteAccountRepositoryMock, ReadAccountRepositoryMock } from './mocks/createAccount-service'
+import { AccountAlreadyExistsError } from '../../errors/account-already-exists-error'
 
 
 type SutTypes = {
@@ -61,7 +62,7 @@ describe('CreateAccount Service', () => {
 		expect(readAccountRepository.existsByCPF).toHaveBeenCalledWith(data.cpf)
 	})
 
-	it('should return null if readAccountRepository.existsByCPF returns true', async () => {
+	it('should return AccountAlreadyExistsError error if readAccountRepository.existsByCPF returns true', async () => {
 		const data: AddAccountParams = {
 			owner_name: 'Caio Tony',
 			cpf: '1234567890', 
@@ -71,9 +72,8 @@ describe('CreateAccount Service', () => {
 		
 		const result = await sut.createAccountService(data)
 
-		expect(result).toBe(null)
+		expect(result).toEqual(new AccountAlreadyExistsError())
 	})
-	
 
 	it('should call writeAccountRepository.create', async () => {
 		const data: AddAccountParams = {

@@ -1,4 +1,4 @@
-class AccountAlreadyExistsError extends Error {
+export class AccountAlreadyExistsError extends Error {
 	constructor() {
 		// eslint-disable-next-line quotes
 		super(`Account already exists" }`)
