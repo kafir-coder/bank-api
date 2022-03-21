@@ -6,6 +6,8 @@ import { DebitFromAccountServiceImpl } from './debitFromAccount-service-impl'
 import { ReadAccountRepositoryMock, WriteAccountRepositoryMock } from './mocks/createAccount-service'
 import { WriteTransactionRepositoryMock } from './mocks/debitFromAccount-service'
 import { IWriteAccountRepository } from '../../models/contracts/writeAccount-repository'
+import { AccountDoesntExistsError } from '../../errors/account-doesnt-exists-error'
+import { AccountHasNotSufficientMoneyError } from '../../errors/account-hasnot-sufficient-money-error'
 
 
 type SutTypes = {
@@ -58,7 +60,7 @@ describe('DebitFromAccount usecase', () => {
 		expect(readAccountRepository.exists).toHaveBeenCalledWith(data.account_id)
 	})
 
-	it('should return null if AccountRepository.exists returns false', async () => {
+	it('should return AccountDoesntExistsError if AccountRepository.exists returns false', async () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
 			amount: 20.4, 
@@ -70,7 +72,7 @@ describe('DebitFromAccount usecase', () => {
 
 		const result = await sut.debitFromAccount(data)
 
-		expect(result).toBe(null)
+		expect(result).toEqual(new AccountDoesntExistsError())
 	})
 
 	it('should call AccountRepository.getBalance', async () => {
@@ -113,7 +115,7 @@ describe('DebitFromAccount usecase', () => {
 		jest.spyOn(readAccountRepository, 'getBalance').mockReturnValue(Promise.resolve(10.4))
 
 		const result = await sut.debitFromAccount(data)
-		expect(result).toBe(null)
+		expect(result).toEqual(new AccountHasNotSufficientMoneyError())
 	})
 
 	

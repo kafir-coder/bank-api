@@ -6,6 +6,7 @@ import { ICreditToAccountService } from '../creditToAccount-service'
 import { CreditToAccountServiceImpl } from './creditToAccount-service-impl'
 import { ReadAccountRepositoryMock, WriteAccountRepositoryMock } from './mocks/createAccount-service'
 import { WriteTransactionRepositoryMock } from './mocks/debitFromAccount-service'
+import { AccountDoesntExistsError } from '../../errors/account-doesnt-exists-error'
 
 type SutTypes = {
   sut: ICreditToAccountService
@@ -64,7 +65,7 @@ describe('CreditToAccount usecase', () => {
 		expect(readAccountRepository.exists).toHaveBeenCalledWith(data.account_id)
 	})
 
-	it('should return null if readAccountRepository.exists returns false', async () => {
+	it('should return AccountDoesntExistsError error if readAccountRepository.exists returns false', async () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
 			amount: 20.4, 
@@ -75,7 +76,7 @@ describe('CreditToAccount usecase', () => {
 		jest.spyOn(readAccountRepository, 'exists').mockReturnValue(Promise.resolve(false))
 		const result = await sut.creditToAccount(data)
 
-		expect(result).toBe(null)
+		expect(result).toEqual(new AccountDoesntExistsError())
 	})
 
 	it('should call WriteTransactionRepository.add', async () => {
