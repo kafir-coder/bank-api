@@ -4,6 +4,8 @@ import { IReadAccountRepository, READ_ACCOUNT_REPOSITORY } from '../../models/co
 import { AddTransactionParams, TransactionModel } from '../../models/transaction'
 import {IDebitFromAccountService} from '../../use-cases/debitFromAccount-service'
 import { IWriteAccountRepository, WRITE_ACCOUNT_REPOSITORY } from '../../models/contracts/writeAccount-repository'
+import { AccountDoesntExistsError } from '../../errors/account-doesnt-exists-error'
+import { AccountHasNotSufficientMoneyError } from '../../errors/account-hasnot-sufficient-money-error'
 
 @Service()
 export class DebitFromAccountServiceImpl implements IDebitFromAccountService {
@@ -13,18 +15,18 @@ export class DebitFromAccountServiceImpl implements IDebitFromAccountService {
 		@Adapter(WRITE_ACCOUNT_REPOSITORY) private readonly writeAccountRepository: IWriteAccountRepository,
 	) {}
 
-	async debitFromAccount(data: Omit<AddTransactionParams, 'type'>): Promise<TransactionModel | null> {
+	async debitFromAccount(data: Omit<AddTransactionParams, 'type'>): Promise<TransactionModel | Error> {
 		
 		const { account_id, amount } = data
 		
 		const account_exists = await this.readAccountRepository.exists(account_id)
-		if (!account_exists) return null // conta inexistente
+		if (!account_exists) return new AccountDoesntExistsError()
 
 		const balance = await this.readAccountRepository.getBalance(account_id)
 
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const difference = balance!-amount
-		if (difference < 0) return null // conta não tem dinheiro suficiente
+		if (difference < 0) return new AccountHasNotSufficientMoneyError() // AccountHasNotSufficientMoneyError
 
 		const transaction = await this.writeTransactionRepository.add({...data, type: 'debit'})
 
