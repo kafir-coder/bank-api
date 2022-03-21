@@ -53,6 +53,18 @@ describe('getBalance usecase', () => {
 		expect(readAccountRepository.exists).toHaveBeenCalledWith(account_id)
 	})
 
+	it('should return null if AccountRepository.exists returns false', async () => {
+		const {sut, readAccountRepository} = make_sut()
+
+		const account_id = 'some-id'
+		jest.spyOn(readAccountRepository, 'exists').mockReturnValue(Promise.resolve(false))
+		
+		await sut.getBalance(account_id)
+
+		const result = await sut.getBalance(account_id)
+
+		expect(result).toBe(null)
+	})
 	it('should call AccountRepository.getBalance with proper argument', async () => {
 		const {sut, readAccountRepository} = make_sut()
 
