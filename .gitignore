@@ -7,3 +7,5 @@ build
 globalConfig.json
 
 jest-mongodb-config.js
+
+coverage
