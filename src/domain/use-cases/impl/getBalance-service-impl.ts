@@ -10,6 +10,8 @@ export class GetBalanceServiceImpl implements IGetBalanceService {
 	}
 
 	async getBalance(account_id: string): Promise<number | null> {
+		const account_exists = await this.readAccountRepository.exists(account_id)
+		if (!account_exists) return null // AccountDoesntExistsError
 		const balance = await this.readAccountRepository.getBalance(account_id)
 		return balance
 	}
