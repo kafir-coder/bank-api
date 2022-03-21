@@ -4,6 +4,7 @@ import { IReadAccountRepository, READ_ACCOUNT_REPOSITORY } from '../../models/co
 import { IWriteTransactionRepository, WRITE_TRANSACTION_REPOSITORY } from '../../models/contracts/writeTransaction-repository'
 import { AddTransactionParams, TransactionModel } from '../../models/transaction'
 import {ICreditToAccountService} from '../creditToAccount-service'
+import { AccountDoesntExistsError } from '../../errors/account-doesnt-exists-error'
 
 @Service()
 export class CreditToAccountServiceImpl implements ICreditToAccountService {
@@ -13,10 +14,10 @@ export class CreditToAccountServiceImpl implements ICreditToAccountService {
 				@Adapter(WRITE_ACCOUNT_REPOSITORY) private readonly writeAccountRepository: IWriteAccountRepository
 	) {
 	}
-	async creditToAccount(data: Omit<AddTransactionParams, 'type'>): Promise<TransactionModel | null> {
+	async creditToAccount(data: Omit<AddTransactionParams, 'type'>): Promise<TransactionModel | Error> {
 		const { account_id, amount } = data
 		const account_exists = await this.readAccountRepository.exists(account_id)
-		if (!account_exists) return null
+		if (!account_exists) return new AccountDoesntExistsError()
 
 		const balance = await this.readAccountRepository.getBalance(account_id)
 
