@@ -25,5 +25,8 @@
     "src",
     "tests"
   ],
+  "_moduleAliases": {
+    "@": "dist"
+  },
   "exclude": []
 }
