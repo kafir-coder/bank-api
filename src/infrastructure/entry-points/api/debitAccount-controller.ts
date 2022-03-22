@@ -11,9 +11,9 @@ export class DebitAccountController {
 		const result = await this.debitFromAccountService.debitFromAccount({...data, type: 'debit'})
 
 		
-		
+		const errors = ['AccountDoesntExistsError', 'AccountHasNotSufficientMoneyError']
 		if (result instanceof Error) {	
-			if (result.name === 'AccountDoesntExistsError') return new BadRequestException(result)
+			if (errors.includes(result.name)) return new BadRequestException(result)
 		}
 	}
 }
