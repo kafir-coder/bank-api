@@ -1,4 +1,4 @@
-import { AccountModel } from '../../../../../../domain/models/account'
+import { AccountModel } from '@/domain/models/account'
 import { model, Schema } from 'mongoose'
 
 const schema = new Schema<AccountModel>({

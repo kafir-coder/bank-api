@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
-import { IReadAccountRepository } from 'src/domain/models/contracts/readAccount-repository'
-import { IWriteAccountRepository } from 'src/domain/models/contracts/writeAccount-repository'
-import {AccountModel, AddAccountParams} from '../../../../../domain/models/account'
+import { IReadAccountRepository } from '@/domain/models/contracts/readAccount-repository'
+import { IWriteAccountRepository } from '@/domain/models/contracts/writeAccount-repository'
+import {AccountModel, AddAccountParams} from '@/domain/models/account'
 import {AccountModelSchema} from './models/account'
 
 export class AccountMongooseRepositoryAdapter implements IWriteAccountRepository, IReadAccountRepository{

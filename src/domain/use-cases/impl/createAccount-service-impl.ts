@@ -1,9 +1,9 @@
 import {Adapter, Service} from '@tsclean/core'
-import {ICreateAccountService} from '../../use-cases/createAccount-service'
+import {ICreateAccountService} from '@/domain/use-cases/createAccount-service'
 import { IWriteAccountRepository, WRITE_ACCOUNT_REPOSITORY } from '../../models/contracts/writeAccount-repository'
-import { AddAccountParams, AccountModel } from 'src/domain/models/account'
+import { AddAccountParams, AccountModel } from '@/domain/models/account'
 import { IReadAccountRepository, READ_ACCOUNT_REPOSITORY } from '../../models/contracts/readAccount-repository'
-import { AccountAlreadyExistsError } from '../../errors/account-already-exists-error'
+import { AccountAlreadyExistsError } from '@/domain/errors/account-already-exists-error'
 @Service()
 export class CreateAccountServiceImpl implements ICreateAccountService {
 	constructor(
