@@ -1,6 +1,7 @@
 import { TransactionModel } from '@/domain/models/transaction'
 import { DEBIT_FROM_ACCOUNT_SERVICE, IDebitFromAccountService } from '@/domain/use-cases/debitFromAccount-service'
 import {Adapter, BadRequestException, Body, HttpException, Mapping, Post} from '@tsclean/core'
+import { badRequest } from './helpers/http-helpers'
 
 @Mapping('/api/v1/debit')
 export class DebitAccountController {
@@ -13,7 +14,7 @@ export class DebitAccountController {
 
 		const errors = ['AccountDoesntExistsError', 'AccountHasNotSufficientMoneyError']
 		if (result instanceof Error) {	
-			if (errors.includes(result.name)) return new BadRequestException(result)
+			if (errors.includes(result.name)) throw new BadRequestException(badRequest(result), result.message)
 		}
 		return result as TransactionModel
 	}
