@@ -85,9 +85,6 @@ describe('DebitFromAccount Controller', () => {
 		} catch (error) {
 			expect(error.name).toBe('BadRequestException')
 		}
-		
-
-		//expect(result).toEqual(new BadRequestException(result))
 	})
 
 	it('should return TransactionModel Object if Service.debitFromAccount returns TransactionModel Object', async () => {
