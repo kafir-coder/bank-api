@@ -61,10 +61,14 @@ describe('DebitFromAccount Controller', () => {
 			account_id: 'some-id',
 			amount: 20.2
 		}
-		jest.spyOn(debitFromAccountService, 'debitFromAccount').mockReturnValue(Promise.resolve(new AccountDoesntExistsError()))
-		const result = await sut.debitFromAccount(debitParams)
+		jest.spyOn(debitFromAccountService, 'debitFromAccount').mockReturnValue(Promise.resolve(new AccountHasNotSufficientMoneyError()))
 
-		expect(result).toEqual(new BadRequestException(result))
+		try {
+			await sut.debitFromAccount(debitParams)
+		} catch (error) {
+			expect(error.name).toBe('BadRequestException')
+		}
+		
 	})
 
 	it('should return 400 if Service.debitFromAccount returns AccountHasNotSufficientMoney', async () => {
@@ -75,9 +79,15 @@ describe('DebitFromAccount Controller', () => {
 			amount: 20.2
 		}
 		jest.spyOn(debitFromAccountService, 'debitFromAccount').mockReturnValue(Promise.resolve(new AccountHasNotSufficientMoneyError()))
-		const result = await sut.debitFromAccount(debitParams)
 
-		expect(result).toEqual(new BadRequestException(result))
+		try {
+			await sut.debitFromAccount(debitParams)
+		} catch (error) {
+			expect(error.name).toBe('BadRequestException')
+		}
+		
+
+		//expect(result).toEqual(new BadRequestException(result))
 	})
 
 	it('should return TransactionModel Object if Service.debitFromAccount returns TransactionModel Object', async () => {
@@ -88,8 +98,11 @@ describe('DebitFromAccount Controller', () => {
 			amount: 20.2
 		}
 		jest.spyOn(debitFromAccountService, 'debitFromAccount')
-		const result = await sut.debitFromAccount(debitParams)
-
-		expect(result).toEqual({...debitParams, id: 'some-id', type: 'debit'})
+		try {
+			await sut.debitFromAccount(debitParams)
+		} catch (error) {
+			console.log(error.name)
+			expect(error.name).toBe('BadRequestException')
+		}
 	})
 })
