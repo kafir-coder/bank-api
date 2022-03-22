@@ -2,7 +2,7 @@
 //@ts-nocheck
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import mongoose from 'mongoose'
-const {connect, ObjectId} = mongoose
+const {connect} = mongoose
 import {AddAccountParams} from '../../../../../domain/models/account'
 import {AccountModelSchema} from './models/account'
 import {AccountMongooseRepositoryAdapter} from './account-mongoose-repository-adapter'
