@@ -79,4 +79,17 @@ describe('DebitFromAccount Controller', () => {
 
 		expect(result).toEqual(new BadRequestException(result))
 	})
+
+	it('should return TransactionModel Object if Service.debitFromAccount returns TransactionModel Object', async () => {
+		const { sut, debitFromAccountService } = make_sut()
+
+		const debitParams: DebitAccountControllerParams = {
+			account_id: 'some-id',
+			amount: 20.2
+		}
+		jest.spyOn(debitFromAccountService, 'debitFromAccount')
+		const result = await sut.debitFromAccount(debitParams)
+
+		expect(result).toEqual({...debitParams, id: 'some-id', type: 'debit'})
+	})
 })
