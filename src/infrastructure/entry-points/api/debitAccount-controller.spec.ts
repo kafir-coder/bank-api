@@ -3,8 +3,6 @@ import { AddTransactionParams, TransactionModel } from '@/domain/models/transact
 import { IDebitFromAccountService } from '@/domain/use-cases/debitFromAccount-service'
 import { BadRequestException } from '@tsclean/core'
 import { DebitAccountController, DebitAccountControllerParams } from './debitAccount-controller'
-import { badRequest } from './helpers/http-helpers'
-
 
 class DebitFromAccountServiceMock implements IDebitFromAccountService {
 	async debitFromAccount(data: AddTransactionParams): Promise<TransactionModel | Error> {
