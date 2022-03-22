@@ -9,15 +9,15 @@
     "sourceMap": true,
     "rootDirs": [
       "src",
-      "tests"
+      "__tests__"
     ],
-    "baseUrl": "src",
+    "baseUrl": ".",
     "paths": {
       "@/tests/*": [
-        "../tests/*"
+        "./__tests__/*"
       ],
       "@/*": [
-        "*"
+        "./src/*"
       ]
     }
   },
