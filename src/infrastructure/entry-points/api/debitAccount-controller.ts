@@ -1,5 +1,8 @@
+import { AccountDoesntExistsError } from '@/domain/errors'
 import { DEBIT_FROM_ACCOUNT_SERVICE, IDebitFromAccountService } from '@/domain/use-cases/debitFromAccount-service'
-import {Adapter, BadRequestException, Body, HttpException, Mapping, Post} from '@tsclean/core'
+import {Adapter, BadRequestException, Body, HttpException, Mapping, Post, Res, Response} from '@tsclean/core'
+import { badRequest, HttpResponse } from './helpers/http-helpers'
+
 @Mapping('/api/v1/debit')
 export class DebitAccountController {
 	constructor(
@@ -13,7 +16,6 @@ export class DebitAccountController {
 		
 		if (result instanceof Error) {	
 			if (result.name === 'AccountDoesntExistsError') return new BadRequestException(result)
-			if (result.name === 'AccountHasNotSufficientMoneyError') return new BadRequestException(result)
 		}
 	}
 }
