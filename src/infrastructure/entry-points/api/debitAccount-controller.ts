@@ -1,7 +1,5 @@
-import { AccountDoesntExistsError } from '@/domain/errors'
 import { DEBIT_FROM_ACCOUNT_SERVICE, IDebitFromAccountService } from '@/domain/use-cases/debitFromAccount-service'
-import {Adapter, BadRequestException, Body, HttpException, Mapping, Post, Res, Response} from '@tsclean/core'
-import { badRequest, HttpResponse } from './helpers/http-helpers'
+import {Adapter, BadRequestException, Body, HttpException, Mapping, Post} from '@tsclean/core'
 
 @Mapping('/api/v1/debit')
 export class DebitAccountController {
