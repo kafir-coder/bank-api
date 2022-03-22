@@ -1,6 +1,7 @@
+import { AccountDoesntExistsError } from '@/domain/errors'
 import { DEBIT_FROM_ACCOUNT_SERVICE, IDebitFromAccountService } from '@/domain/use-cases/debitFromAccount-service'
-import {Adapter, Body, Mapping, Post} from '@tsclean/core'
-import { HttpResponse } from './helpers/http-helpers'
+import {Adapter, BadRequestException, Body, HttpException, Mapping, Post, Res, Response} from '@tsclean/core'
+import { badRequest, HttpResponse } from './helpers/http-helpers'
 
 @Mapping('/api/v1/debit')
 export class DebitAccountController {
@@ -8,11 +9,13 @@ export class DebitAccountController {
         @Adapter(DEBIT_FROM_ACCOUNT_SERVICE) private readonly debitFromAccountService: IDebitFromAccountService
 	) {}
   @Post()
-	async debitFromAccount(@Body() data: DebitAccountControllerParams): Promise<HttpResponse> {
-		this.debitFromAccountService.debitFromAccount({...data, type: 'debit'})
-		return { 
-			statusCode: 201,
-			body: 'ola'
+	async debitFromAccount(@Body() data: DebitAccountControllerParams): Promise<HttpException> {
+		const result = await this.debitFromAccountService.debitFromAccount({...data, type: 'debit'})
+
+		
+		
+		if (result instanceof Error) {	
+			if (result.name === 'AccountDoesntExistsError') return new BadRequestException(result)
 		}
 	}
 }
