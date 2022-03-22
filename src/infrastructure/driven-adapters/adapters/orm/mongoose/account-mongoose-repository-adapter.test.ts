@@ -4,7 +4,7 @@
 import mongoose from 'mongoose'
 const {connect} = mongoose
 import {AddAccountParams} from '@/domain/models/account'
-import {AccountModelSchema} from '@/domain/models/account'
+import {AccountModelSchema} from '@/infrastructure/driven-adapters/adapters/orm/mongoose/models/account'
 import {AccountMongooseRepositoryAdapter} from './account-mongoose-repository-adapter'
 
 const make_sut = (): (IWriteAccountRepository & IReadAccountRepository) => {
