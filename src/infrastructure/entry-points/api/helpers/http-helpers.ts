@@ -1,4 +1,4 @@
-import { AccountHasNotSufficientMoneyError, AccountDoesntExistsError, AccountAlreadyExistsError, ServerError } from '@/domain/errors/'
+import { ServerError } from '@/domain/errors/'
 
 
 export type HttpResponse = {
@@ -8,7 +8,10 @@ export type HttpResponse = {
 
 export const badRequest = (error: Error): HttpResponse => ({
 	statusCode: 400,
-	body: error
+	body: {
+		name: error.name,
+		message: error.message
+	}
 })
 
 export const serverError = (error: Error): HttpResponse => ({
