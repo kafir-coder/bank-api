@@ -1,4 +1,4 @@
-import { AccountDoesntExistsError } from '@/domain/errors'
+import { AccountDoesntExistsError, AccountHasNotSufficientMoneyError } from '@/domain/errors'
 import { AddTransactionParams, TransactionModel } from '@/domain/models/transaction'
 import { IDebitFromAccountService } from '@/domain/use-cases/debitFromAccount-service'
 import { BadRequestException } from '@tsclean/core'
@@ -64,6 +64,19 @@ describe('DebitFromAccount Controller', () => {
 			amount: 20.2
 		}
 		jest.spyOn(debitFromAccountService, 'debitFromAccount').mockReturnValue(Promise.resolve(new AccountDoesntExistsError()))
+		const result = await sut.debitFromAccount(debitParams)
+
+		expect(result).toEqual(new BadRequestException(result))
+	})
+
+	it('should return 400 if Service.debitFromAccount returns AccountHasNotSufficientMoney', async () => {
+		const { sut, debitFromAccountService } = make_sut()
+
+		const debitParams: DebitAccountControllerParams = {
+			account_id: 'some-id',
+			amount: 20.2
+		}
+		jest.spyOn(debitFromAccountService, 'debitFromAccount').mockReturnValue(Promise.resolve(new AccountHasNotSufficientMoneyError()))
 		const result = await sut.debitFromAccount(debitParams)
 
 		expect(result).toEqual(new BadRequestException(result))
