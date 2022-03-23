@@ -94,11 +94,8 @@ describe('DebitFromAccount Controller', () => {
 			amount: 20.2
 		}
 		jest.spyOn(debitFromAccountService, 'debitFromAccount')
-		try {
-			await sut.debitFromAccount(debitParams)
-		} catch (error) {
-			console.log(error.name)
-			expect(error.name).toBe('BadRequestException')
-		}
+		const result = await sut.debitFromAccount(debitParams)
+			
+		expect(result).toEqual({...debitParams, id: 'some-id', type: 'debit'})
 	})
 })
