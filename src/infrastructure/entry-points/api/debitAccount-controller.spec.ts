@@ -1,7 +1,6 @@
-import { AccountDoesntExistsError, AccountHasNotSufficientMoneyError } from '@/domain/errors'
+import { AccountHasNotSufficientMoneyError } from '@/domain/errors'
 import { AddTransactionParams, TransactionModel } from '@/domain/models/transaction'
 import { IDebitFromAccountService } from '@/domain/use-cases/debitFromAccount-service'
-import { BadRequestException } from '@tsclean/core'
 import { DebitAccountController, DebitAccountControllerParams } from './debitAccount-controller'
 
 class DebitFromAccountServiceMock implements IDebitFromAccountService {
