@@ -1,7 +1,7 @@
 import { ICreditToAccountService } from '@/domain/use-cases/creditToAccount-service'
 import { IDebitFromAccountService } from '@/domain/use-cases/debitFromAccount-service'
 import { CreditToAccountServiceMock, DebitFromAccountServiceMock } from './mocks'
-import { TransferMoneyController } from './transferMoney-controller'
+import { TransferControllerParams, TransferMoneyController } from './transferMoney-controller'
 
 
 type SutTypes = {
@@ -27,5 +27,16 @@ const make_sut = (): SutTypes=> {
 
 describe('TransferMoney controller', () => {
   
- 
+	it('should call DebitFromAccountService.debitFromAccount', async () => {
+		const { sut, debitFromAccountService } = make_sut()
+		const transferParams: TransferControllerParams = {
+			origin_account_id: 'some-id',
+			target_account_id: 'other-id',
+			amount: 20
+		}
+
+		jest.spyOn(debitFromAccountService, 'debitFromAccount')
+		await sut.transferMoney(transferParams)
+		expect(debitFromAccountService.debitFromAccount).toHaveBeenCalledTimes(1)
+	})
 })
