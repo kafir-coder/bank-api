@@ -1,7 +1,7 @@
 import { CREDIT_TO_ACCOUNT_SERVICE, ICreditToAccountService } from '@/domain/use-cases/creditToAccount-service'
 import { DEBIT_FROM_ACCOUNT_SERVICE, IDebitFromAccountService } from '@/domain/use-cases/debitFromAccount-service'
-import {Adapter, Body, HttpCode, Mapping, Post} from '@tsclean/core'
-import { HttpResponse, ok } from './helpers/http-helpers'
+import {Adapter, BadRequestException, Body, HttpCode, Mapping, Post} from '@tsclean/core'
+import { badRequest, HttpResponse, ok } from './helpers/http-helpers'
 
 @Mapping('/api/v1/transfer')
 export class TransferMoneyController {
@@ -13,11 +13,14 @@ export class TransferMoneyController {
     @HttpCode(200)
 	async transferMoney(@Body() data: TransferControllerParams): Promise<HttpResponse> {
 		const {origin_account_id, amount} = data
-		this.debitFromAccountService.debitFromAccount({
+		const result = await this.debitFromAccountService.debitFromAccount({
 			amount,
 			account_id: origin_account_id,
 			type: 'debit'
 		})
+
+		if (result instanceof Error) throw new BadRequestException(badRequest(result))
+		
 		return ok('12')
 	}
 
