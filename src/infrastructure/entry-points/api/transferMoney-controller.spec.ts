@@ -1,3 +1,4 @@
+import { AccountDoesntExistsError } from '@/domain/errors'
 import { ICreditToAccountService } from '@/domain/use-cases/creditToAccount-service'
 import { IDebitFromAccountService } from '@/domain/use-cases/debitFromAccount-service'
 import { CreditToAccountServiceMock, DebitFromAccountServiceMock } from './mocks'
@@ -55,5 +56,20 @@ describe('TransferMoney controller', () => {
 			amount: transferParams.amount,
 			type: 'debit'
 		})
+	})
+
+	it('should return 400 if DebitFromAccountService.debitFromAccount returns AccountDoesntExistsError', async () => {
+		const { sut, debitFromAccountService } = make_sut()
+		const transferParams: TransferControllerParams = {
+			origin_account_id: 'some-id',
+			target_account_id: 'other-id',
+			amount: 20
+		}
+		jest.spyOn(debitFromAccountService, 'debitFromAccount').mockReturnValue(Promise.resolve(new AccountDoesntExistsError()))
+		try {
+			await sut.transferMoney(transferParams)
+		} catch (error) {
+			expect(error.name).toBe('BadRequestException')
+		}
 	})
 })
