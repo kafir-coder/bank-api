@@ -1,3 +1,4 @@
+import { AccountDoesntExistsError } from '@/domain/errors'
 import { IReadAccountRepository } from '@/domain/models/contracts/readAccount-repository'
 import { IGetBalanceService } from '../getBalance-service'
 import { GetBalanceServiceImpl } from './getBalance-service-impl'
@@ -53,7 +54,7 @@ describe('getBalance usecase', () => {
 		expect(readAccountRepository.exists).toHaveBeenCalledWith(account_id)
 	})
 
-	it('should return null if AccountRepository.exists returns false', async () => {
+	it('should return AccountDoesntExistsError if AccountRepository.exists returns false', async () => {
 		const {sut, readAccountRepository} = make_sut()
 
 		const account_id = 'some-id'
@@ -63,7 +64,7 @@ describe('getBalance usecase', () => {
 
 		const result = await sut.getBalance(account_id)
 
-		expect(result).toBe(null)
+		expect(result).toEqual(new AccountDoesntExistsError())
 	})
 	it('should call AccountRepository.getBalance with proper argument', async () => {
 		const {sut, readAccountRepository} = make_sut()
@@ -76,14 +77,14 @@ describe('getBalance usecase', () => {
 		expect(readAccountRepository.getBalance).toHaveBeenCalledWith(account_id)
 	})
 
-	it('should return null if the readAccountRepository.getBalance returns null', async () => {
+	it('should return a number if all is ok', async () => {
 		const {sut, readAccountRepository} = make_sut()
 
 		const account_id = 'some-id'
-		jest.spyOn(readAccountRepository, 'getBalance').mockReturnValue(Promise.resolve(null))
+		jest.spyOn(readAccountRepository, 'getBalance')
 
 		const result = await sut.getBalance(account_id)
 
-		expect(result).toBe(null)
+		expect(typeof result).toBe('number')
 	})
 })
