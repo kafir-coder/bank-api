@@ -1,5 +1,5 @@
 import { GET_BALANCE_SERVICE, IGetBalanceService } from '@/domain/use-cases/getBalance-service'
-import {Mapping, Get, HttpCode, Adapter} from '@tsclean/core'
+import {Mapping, Get, HttpCode, Adapter, Query} from '@tsclean/core'
 
 @Mapping('api/v1/getBalance')
 export class GetBalanceController {
@@ -11,7 +11,8 @@ export class GetBalanceController {
     // Example function
     @Get()
     @HttpCode(200)
-	async getBalance(): Promise<any> {
+	async getBalance(@Query() accound_id: string): Promise<any> {
+		this.getBalanceService.getBalance(accound_id)
 		return 'Welcome to the world of clean architecture'
 	}
 }
