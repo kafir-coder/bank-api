@@ -2,6 +2,7 @@ import { AccountHasNotSufficientMoneyError } from '@/domain/errors'
 import { AddTransactionParams, TransactionModel } from '@/domain/models/transaction'
 import { IDebitFromAccountService } from '@/domain/use-cases/debitFromAccount-service'
 import { DebitAccountController, DebitAccountControllerParams } from './debitAccount-controller'
+import { ok } from './helpers/http-helpers'
 
 class DebitFromAccountServiceMock implements IDebitFromAccountService {
 	async debitFromAccount(data: AddTransactionParams): Promise<TransactionModel | Error> {
@@ -86,7 +87,7 @@ describe('DebitFromAccount Controller', () => {
 		}
 	})
 
-	it('should return TransactionModel Object if Service.debitFromAccount returns TransactionModel Object', async () => {
+	it('should return 200 Object if Service.debitFromAccount returns TransactionModel object', async () => {
 		const { sut, debitFromAccountService } = make_sut()
 
 		const debitParams: DebitAccountControllerParams = {
@@ -95,7 +96,6 @@ describe('DebitFromAccount Controller', () => {
 		}
 		jest.spyOn(debitFromAccountService, 'debitFromAccount')
 		const result = await sut.debitFromAccount(debitParams)
-			
-		expect(result).toEqual({...debitParams, id: 'some-id', type: 'debit'})
+		expect(result).toEqual(ok({...debitParams, id: 'some-id', type: 'debit'}))
 	})
 })
