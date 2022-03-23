@@ -2,6 +2,7 @@ import { AccountDoesntExistsError } from '@/domain/errors'
 import { AddTransactionParams, TransactionModel } from '@/domain/models/transaction'
 import { ICreditToAccountService } from '@/domain/use-cases/creditToAccount-service'
 import { CreditAccountController, CreditAccountControllerParams } from './creditAccount-controller'
+import { ok } from './helpers/http-helpers'
 
 class CreditToAccountServiceMock implements ICreditToAccountService {
 	async creditToAccount(data: AddTransactionParams): Promise<TransactionModel | Error> {
@@ -77,6 +78,6 @@ describe('CreditToAccount controller', () => {
 		jest.spyOn(creditFromAccountService, 'creditToAccount')
 		const result = await sut.creditToAccount(creditParams)
 			
-		expect(result).toEqual({...creditParams, id: 'some-id', type: 'credit'})
+		expect(result).toEqual(ok({...creditParams, id: 'some-id', type: 'credit'}))
 	})
 })
