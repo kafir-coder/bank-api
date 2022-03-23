@@ -1,4 +1,4 @@
-import { IReadAccountRepository } from '../../models/contracts/readAccount-repository'
+import { IReadAccountRepository } from '@/domain/models/contracts/readAccount-repository'
 import { IGetBalanceService } from '../getBalance-service'
 import { GetBalanceServiceImpl } from './getBalance-service-impl'
 import { ReadAccountRepositoryMock } from './mocks/createAccount-service'

@@ -1,11 +1,11 @@
 import {Adapter, Service} from '@tsclean/core'
-import { IWriteTransactionRepository, WRITE_TRANSACTION_REPOSITORY } from '../../models/contracts/writeTransaction-repository'
-import { IReadAccountRepository, READ_ACCOUNT_REPOSITORY } from '../../models/contracts/readAccount-repository'
-import { AddTransactionParams, TransactionModel } from '../../models/transaction'
-import {IDebitFromAccountService} from '../../use-cases/debitFromAccount-service'
-import { IWriteAccountRepository, WRITE_ACCOUNT_REPOSITORY } from '../../models/contracts/writeAccount-repository'
-import { AccountDoesntExistsError } from '../../errors/account-doesnt-exists-error'
-import { AccountHasNotSufficientMoneyError } from '../../errors/account-hasnot-sufficient-money-error'
+import { IWriteTransactionRepository, WRITE_TRANSACTION_REPOSITORY } from '@/domain/models/contracts/writeTransaction-repository'
+import { IReadAccountRepository, READ_ACCOUNT_REPOSITORY } from '@/domain/models/contracts/readAccount-repository'
+import { AddTransactionParams, TransactionModel } from '@/domain/models/transaction'
+import {IDebitFromAccountService} from '@/domain/use-cases/debitFromAccount-service'
+import { IWriteAccountRepository, WRITE_ACCOUNT_REPOSITORY } from '@/domain/models/contracts/writeAccount-repository'
+import { AccountDoesntExistsError } from '@/domain/errors/account-doesnt-exists-error'
+import { AccountHasNotSufficientMoneyError } from '@/domain/errors/account-hasnot-sufficient-money-error'
 
 @Service()
 export class DebitFromAccountServiceImpl implements IDebitFromAccountService {

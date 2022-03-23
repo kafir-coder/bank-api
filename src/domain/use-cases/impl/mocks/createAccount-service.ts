@@ -1,6 +1,6 @@
-import { AccountModel, AddAccountParams } from 'src/domain/models/account'
-import { IWriteAccountRepository } from 'src/domain/models/contracts/writeAccount-repository'
-import { IReadAccountRepository } from 'src/domain/models/contracts/readAccount-repository'
+import { AccountModel, AddAccountParams } from '@/domain/models/account'
+import { IWriteAccountRepository } from '@/domain/models/contracts/writeAccount-repository'
+import { IReadAccountRepository } from '@/domain/models/contracts/readAccount-repository'
 
 export class WriteAccountRepositoryMock implements IWriteAccountRepository {
 	async create(data: AddAccountParams): Promise<AccountModel> {

@@ -1,10 +1,10 @@
-import { AccountModel, AddAccountParams } from 'src/domain/models/account'
-import { IWriteAccountRepository } from 'src/domain/models/contracts/writeAccount-repository'
-import { IReadAccountRepository } from 'src/domain/models/contracts/readAccount-repository'
+import { AccountModel, AddAccountParams } from '@/domain/models/account'
+import { IWriteAccountRepository } from '@/domain/models/contracts/writeAccount-repository'
+import { IReadAccountRepository } from '@/domain/models/contracts/readAccount-repository'
 import { ICreateAccountService } from '../createAccount-service'
 import { CreateAccountServiceImpl } from './createAccount-service-impl'
 import { WriteAccountRepositoryMock, ReadAccountRepositoryMock } from './mocks/createAccount-service'
-import { AccountAlreadyExistsError } from '../../errors/account-already-exists-error'
+import { AccountAlreadyExistsError } from '@/domain/errors/account-already-exists-error'
 
 
 type SutTypes = {

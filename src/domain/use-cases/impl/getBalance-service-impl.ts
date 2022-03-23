@@ -1,5 +1,5 @@
 import {Adapter, Service} from '@tsclean/core'
-import { IReadAccountRepository, READ_ACCOUNT_REPOSITORY } from '../../models/contracts/readAccount-repository'
+import { IReadAccountRepository, READ_ACCOUNT_REPOSITORY } from '@/domain/models/contracts/readAccount-repository'
 import {IGetBalanceService} from '../getBalance-service'
 
 @Service()

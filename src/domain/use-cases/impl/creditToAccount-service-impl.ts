@@ -1,10 +1,10 @@
 import {Adapter, Service} from '@tsclean/core'
-import { IWriteAccountRepository, WRITE_ACCOUNT_REPOSITORY } from '../../models/contracts/writeAccount-repository'
-import { IReadAccountRepository, READ_ACCOUNT_REPOSITORY } from '../../models/contracts/readAccount-repository'
-import { IWriteTransactionRepository, WRITE_TRANSACTION_REPOSITORY } from '../../models/contracts/writeTransaction-repository'
-import { AddTransactionParams, TransactionModel } from '../../models/transaction'
+import { IWriteAccountRepository, WRITE_ACCOUNT_REPOSITORY } from '@/domain/models/contracts/writeAccount-repository'
+import { IReadAccountRepository, READ_ACCOUNT_REPOSITORY } from '@/domain/models/contracts/readAccount-repository'
+import { IWriteTransactionRepository, WRITE_TRANSACTION_REPOSITORY } from '@/domain/models/contracts/writeTransaction-repository'
+import { AddTransactionParams, TransactionModel } from '@/domain/models/transaction'
 import {ICreditToAccountService} from '../creditToAccount-service'
-import { AccountDoesntExistsError } from '../../errors/account-doesnt-exists-error'
+import { AccountDoesntExistsError } from '@/domain/errors/account-doesnt-exists-error'
 
 @Service()
 export class CreditToAccountServiceImpl implements ICreditToAccountService {

@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-nocheck
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-import { IWriteTransactionRepository } from '../../../../../domain/models/contracts/writeTransaction-repository'
+import { IWriteTransactionRepository } from '@/domain/models/contracts/writeTransaction-repository'
 import { TransactionMongooseRepositoryAdapter } from './transaction-mongoose-repository-adapter'
 import mongoose from 'mongoose'
 import { TransactionModelSchema } from './models/transaction'

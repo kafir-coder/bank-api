@@ -1,13 +1,13 @@
-import { IWriteTransactionRepository } from '../../models/contracts/writeTransaction-repository'
-import { IReadAccountRepository } from '../../models/contracts/readAccount-repository'
-import { AddTransactionParams } from '../../models/transaction'
+import { IWriteTransactionRepository } from '@/domain/models/contracts/writeTransaction-repository'
+import { IReadAccountRepository } from '@/domain/models/contracts/readAccount-repository'
+import { AddTransactionParams } from '@/domain/models/transaction'
 import { IDebitFromAccountService } from '../debitFromAccount-service'
 import { DebitFromAccountServiceImpl } from './debitFromAccount-service-impl'
 import { ReadAccountRepositoryMock, WriteAccountRepositoryMock } from './mocks/createAccount-service'
 import { WriteTransactionRepositoryMock } from './mocks/debitFromAccount-service'
-import { IWriteAccountRepository } from '../../models/contracts/writeAccount-repository'
-import { AccountDoesntExistsError } from '../../errors/account-doesnt-exists-error'
-import { AccountHasNotSufficientMoneyError } from '../../errors/account-hasnot-sufficient-money-error'
+import { IWriteAccountRepository } from '@/domain/models/contracts/writeAccount-repository'
+import { AccountDoesntExistsError } from '@/domain/errors/account-doesnt-exists-error'
+import { AccountHasNotSufficientMoneyError } from '@/domain/errors/account-hasnot-sufficient-money-error'
 
 
 type SutTypes = {
