@@ -38,4 +38,16 @@ describe('GetBalance controller', () => {
 
 		expect(getBalanceService.getBalance).toHaveBeenCalledTimes(1)
 	})
+
+	it('should call GetBalanceService.getBalance with proper argument', async () => {
+
+		const { sut, getBalanceService } = make_sut()
+		const account_id = 'some-id'
+
+		jest.spyOn(getBalanceService, 'getBalance')
+
+		await sut.getBalance({account_id})
+
+		expect(getBalanceService.getBalance).toHaveBeenCalledWith(account_id)
+	})
 })
