@@ -1,9 +1,10 @@
+import { AccountDoesntExistsError } from '@/domain/errors'
 import { IGetBalanceService } from '@/domain/use-cases/getBalance-service'
 import { GetBalanceController } from './getBalance-controller'
 
 class GetBalanceServiceMock implements IGetBalanceService {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	async getBalance(_account_id: string): Promise<number> {
+	async getBalance(_account_id: string): Promise<number | Error> {
 		return 20
 	}
 }
@@ -49,5 +50,20 @@ describe('GetBalance controller', () => {
 		await sut.getBalance({account_id})
 
 		expect(getBalanceService.getBalance).toHaveBeenCalledWith(account_id)
+	})
+
+	it('should retun 400 if GetBalanceService.getBalance returns AccountDoesntExistsError', async () => {
+		const { sut, getBalanceService } = make_sut()
+		const account_id = 'some-id'
+
+		jest.spyOn(getBalanceService, 'getBalance').mockReturnValue(Promise.resolve(new AccountDoesntExistsError()))
+
+		try {
+			await sut.getBalance({account_id})
+		} catch (error) {
+			console.log(error)
+			expect(error.name).toBe('BadRequestException')
+		}
+
 	})
 })
