@@ -1,3 +1,4 @@
+import { AccountDoesntExistsError } from '@/domain/errors'
 import { AddTransactionParams, TransactionModel } from '@/domain/models/transaction'
 import { ICreditToAccountService } from '@/domain/use-cases/creditToAccount-service'
 import { CreditAccountController, CreditAccountControllerParams } from './creditAccount-controller'
@@ -48,5 +49,21 @@ describe('CreditToAccount controller', () => {
 		await sut.creditToAccount(creditParams)
 
 		expect(creditFromAccountService.creditToAccount).toHaveBeenCalledWith({...creditParams, type: 'credit'})
+	})
+	
+	it('should returns 400 if CreditAccountService.creditToAccount returns AccountDoesntExistsError', async () => {
+		const { sut, creditFromAccountService } = make_sut()
+
+		const creditParams: CreditAccountControllerParams = {
+			account_id: 'some-id',
+			amount: 20.2
+		}
+		jest.spyOn(creditFromAccountService, 'creditToAccount').mockReturnValue(Promise.resolve(new AccountDoesntExistsError()))
+
+		try {
+			await sut.creditToAccount(creditParams)
+		} catch (error) {
+			expect(error.name).toBe('BadRequestException')
+		}
 	})
 })
