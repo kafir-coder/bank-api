@@ -1,5 +1,6 @@
 import { GET_BALANCE_SERVICE, IGetBalanceService } from '@/domain/use-cases/getBalance-service'
-import {Mapping, Get, HttpCode, Adapter, Query} from '@tsclean/core'
+import {Mapping, Get, HttpCode, Adapter, Query, BadRequestException} from '@tsclean/core'
+import { badRequest } from './helpers/http-helpers'
 
 @Mapping('api/v1/getBalance')
 export class GetBalanceController {
@@ -12,7 +13,15 @@ export class GetBalanceController {
     @Get()
     @HttpCode(200)
 	async getBalance(@Query() query: GetBalanceControllerParams): Promise<GetBalanceControllerResponse> {
-		this.getBalanceService.getBalance(query.account_id)
+		const result = await this.getBalanceService.getBalance(query.account_id)
+		
+		const errors = ['AccountDoesntExistsError']
+		console.log(result)
+		console.log(result instanceof Error)
+		if (result instanceof Error) {
+			console.log(result)
+			if (errors.includes(result.name)) throw new BadRequestException(badRequest(result))
+		}
 		return {
 			balance: 20
 		}
