@@ -1,7 +1,6 @@
-import { TransactionModel } from '@/domain/models/transaction'
 import { CREDIT_TO_ACCOUNT_SERVICE, ICreditToAccountService } from '@/domain/use-cases/creditToAccount-service'
 import {Adapter, BadRequestException, Body, Mapping, Post} from '@tsclean/core'
-import { badRequest } from './helpers/http-helpers'
+import { badRequest, HttpResponse, ok } from './helpers/http-helpers'
 
 @Mapping('/api/v1/credit')
 export class CreditAccountController {
@@ -10,14 +9,14 @@ export class CreditAccountController {
 	) {}
 
 	@Post()
-	async creditToAccount(@Body() data: CreditAccountControllerParams) : Promise<TransactionModel> {
+	async creditToAccount(@Body() data: CreditAccountControllerParams) : Promise<HttpResponse> {
 		const result = await this.creditToAccountService.creditToAccount({...data, type: 'credit'})
 
 		const errors = ['AccountDoesntExistsError']
 		if (result instanceof Error) {
 			if (errors.includes(result.name)) throw new BadRequestException(badRequest(result))
 		}
-		return result as TransactionModel
+		return ok(result)
 	}
 }
 
