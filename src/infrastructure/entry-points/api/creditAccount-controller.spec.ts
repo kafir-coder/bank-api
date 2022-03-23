@@ -66,4 +66,17 @@ describe('CreditToAccount controller', () => {
 			expect(error.name).toBe('BadRequestException')
 		}
 	})
+
+	it('should return TransactionModel Object if Service.creditToAccount returns TransactionModel', async () => {
+		const { sut, creditFromAccountService } = make_sut()
+
+		const creditParams: CreditAccountControllerParams = {
+			account_id: 'some-id',
+			amount: 20.2
+		}
+		jest.spyOn(creditFromAccountService, 'creditToAccount')
+		const result = await sut.creditToAccount(creditParams)
+			
+		expect(result).toEqual({...creditParams, id: 'some-id', type: 'credit'})
+	})
 })
