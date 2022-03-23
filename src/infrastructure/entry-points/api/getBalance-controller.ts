@@ -11,8 +11,19 @@ export class GetBalanceController {
     // Example function
     @Get()
     @HttpCode(200)
-	async getBalance(@Query() accound_id: string): Promise<any> {
-		this.getBalanceService.getBalance(accound_id)
-		return 'Welcome to the world of clean architecture'
+	async getBalance(@Query() query: GetBalanceControllerParams): Promise<GetBalanceControllerResponse> {
+		this.getBalanceService.getBalance(query.account_id)
+		return {
+			balance: 20
+		}
 	}
+}
+
+
+export type GetBalanceControllerParams = {
+	account_id: string
+}
+
+export type GetBalanceControllerResponse = {
+	balance: number
 }

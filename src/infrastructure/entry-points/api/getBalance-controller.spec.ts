@@ -34,7 +34,7 @@ describe('GetBalance controller', () => {
 
 		jest.spyOn(getBalanceService, 'getBalance')
 
-		await sut.getBalance(account_id)
+		await sut.getBalance({account_id})
 
 		expect(getBalanceService.getBalance).toHaveBeenCalledTimes(1)
 	})
