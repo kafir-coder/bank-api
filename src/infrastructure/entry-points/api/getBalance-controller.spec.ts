@@ -1,9 +1,9 @@
-import { IDebitFromAccountService } from '@/domain/use-cases/debitFromAccount-service'
 import { IGetBalanceService } from '@/domain/use-cases/getBalance-service'
 import { GetBalanceController } from './getBalance-controller'
 
 class GetBalanceServiceMock implements IGetBalanceService {
-	async getBalance(account_id: string): Promise<number> {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	async getBalance(_account_id: string): Promise<number> {
 		return 20
 	}
 }
@@ -26,4 +26,16 @@ const make_sut = (): SutTypes => {
 
 describe('GetBalance controller', () => {
   
+
+	it('should call GetBalanceService.getBalance', async () => {
+
+		const { sut, getBalanceService } = make_sut()
+		const account_id = 'some-id'
+
+		jest.spyOn(getBalanceService, 'getBalance')
+
+		await sut.getBalance(account_id)
+
+		expect(getBalanceService.getBalance).toHaveBeenCalledTimes(1)
+	})
 })
