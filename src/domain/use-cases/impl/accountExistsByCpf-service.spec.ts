@@ -57,4 +57,16 @@ describe('AccountExistsByCpf usecase', () => {
 		expect(result).toEqual(new AccountDoesntExistsError())
 
 	})
+
+	it('should return true if readAccountRepository.existsByCPF returns true', async () => {
+		const { sut, readAccountRepository } = make_sut()
+
+		const cpf = 'some-cpf'
+
+		jest.spyOn(readAccountRepository, 'existsByCPF')
+
+		const result = await sut.existsByCpf(cpf)
+
+		expect(result).toBe(true)
+	})
 })
