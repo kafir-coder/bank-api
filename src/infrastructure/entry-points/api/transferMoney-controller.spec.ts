@@ -72,4 +72,20 @@ describe('TransferMoney controller', () => {
 			expect(error.name).toBe('BadRequestException')
 		}
 	})
+
+	it('should call CreditToAccountService.creditToAccount', async () => {
+		const { sut, creditToAccountService } = make_sut()
+
+		const transferParams: TransferControllerParams = {
+			origin_account_id: 'some-id',
+			target_account_id: 'other-id',
+			amount: 20
+		}
+
+		jest.spyOn(creditToAccountService, 'creditToAccount')
+
+		await sut.transferMoney(transferParams)
+
+		expect(creditToAccountService.creditToAccount).toHaveBeenCalledTimes(1)
+	})
 })
