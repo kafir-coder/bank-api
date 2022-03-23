@@ -12,7 +12,7 @@ export class TransferMoneyController {
     @Post()
     @HttpCode(200)
 	async transferMoney(@Body() data: TransferControllerParams): Promise<HttpResponse> {
-		const {origin_account_id, amount} = data
+		const {origin_account_id, target_account_id, amount} = data
 		const result = await this.debitFromAccountService.debitFromAccount({
 			amount,
 			account_id: origin_account_id,
@@ -21,6 +21,11 @@ export class TransferMoneyController {
 
 		if (result instanceof Error) throw new BadRequestException(badRequest(result))
 		
+		this.creditToAccountService.creditToAccount({
+			amount,
+			account_id: target_account_id,
+			type: 'credit'
+		})
 		return ok('12')
 	}
 
