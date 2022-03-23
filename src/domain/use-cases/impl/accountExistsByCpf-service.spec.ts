@@ -1,3 +1,4 @@
+import { AccountDoesntExistsError } from '@/domain/errors'
 import { IReadAccountRepository } from '@/domain/models/contracts/readAccount-repository'
 import { IAccountExistsByCpfService } from '../accountExistsByCpf-service'
 import { AccountExistsByCpfServiceImpl } from './accountExistsByCpf-service-impl'
@@ -42,5 +43,18 @@ describe('AccountExistsByCpf usecase', () => {
 		await sut.existsByCpf(cpf)
 
 		expect(readAccountRepository.existsByCPF).toHaveBeenCalledWith(cpf)
+	})
+
+	it('should return AccountDoesntExistError if readAccountRepository.existsByCPF false',async () => {
+		const { sut, readAccountRepository } = make_sut()
+
+		const cpf = 'some-cpf'
+
+		jest.spyOn(readAccountRepository, 'existsByCPF').mockReturnValue(Promise.resolve(false))
+
+		const result = await sut.existsByCpf(cpf)
+
+		expect(result).toEqual(new AccountDoesntExistsError())
+
 	})
 })
