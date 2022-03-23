@@ -12,6 +12,6 @@ export class AccountExistsByCpfServiceImpl implements IAccountExistsByCpfService
 		const exists = await this.readAccountRepository.existsByCPF(cpf)
 	
 		if (!exists) return new AccountDoesntExistsError()
-		return true
+		return exists
 	}
 }
