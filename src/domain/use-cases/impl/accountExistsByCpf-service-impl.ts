@@ -8,6 +8,7 @@ export class AccountExistsByCpfServiceImpl implements IAccountExistsByCpfService
         @Adapter(READ_ACCOUNT_REPOSITORY) private readonly readAccountRepository: IReadAccountRepository
 	) {}
 	async existsByCpf(cpf: string): Promise<boolean> {
+		this.readAccountRepository.existsByCPF(cpf)
 		return true
 	}
 }
