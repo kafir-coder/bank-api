@@ -12,6 +12,12 @@ export class TransferMoneyController {
     @Post()
     @HttpCode(200)
 	async transferMoney(@Body() data: TransferControllerParams): Promise<HttpResponse> {
+		const {origin_account_id, amount} = data
+		this.debitFromAccountService.debitFromAccount({
+			amount,
+			account_id: origin_account_id,
+			type: 'debit'
+		})
 		return ok('12')
 	}
 
@@ -19,7 +25,7 @@ export class TransferMoneyController {
 
 
 export type TransferControllerParams = {
-    from_account_id: number
-    to_account_id: number
-    ammount: number
+    origin_account_id: string
+    target_account_id: string
+    amount: number
 }
