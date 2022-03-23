@@ -39,4 +39,21 @@ describe('TransferMoney controller', () => {
 		await sut.transferMoney(transferParams)
 		expect(debitFromAccountService.debitFromAccount).toHaveBeenCalledTimes(1)
 	})
+
+	it('should call DebitFromAccountService.debitFromAccount with proper argument', async () => {
+		const { sut, debitFromAccountService } = make_sut()
+		const transferParams: TransferControllerParams = {
+			origin_account_id: 'some-id',
+			target_account_id: 'other-id',
+			amount: 20
+		}
+
+		jest.spyOn(debitFromAccountService, 'debitFromAccount')
+		await sut.transferMoney(transferParams)
+		expect(debitFromAccountService.debitFromAccount).toHaveBeenCalledWith( {
+			account_id: transferParams.origin_account_id,
+			amount: transferParams.amount,
+			type: 'debit'
+		})
+	})
 })
