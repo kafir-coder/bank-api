@@ -1,6 +1,7 @@
 import { AccountDoesntExistsError } from '@/domain/errors'
 import { IGetBalanceService } from '@/domain/use-cases/getBalance-service'
 import { GetBalanceController } from './getBalance-controller'
+import { ok } from './helpers/http-helpers'
 
 class GetBalanceServiceMock implements IGetBalanceService {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -61,9 +62,20 @@ describe('GetBalance controller', () => {
 		try {
 			await sut.getBalance({account_id})
 		} catch (error) {
-			console.log(error)
 			expect(error.name).toBe('BadRequestException')
 		}
 
+	})
+
+	it('should return 200 if GetBalanceService.getBalance returns number', async () => {
+		const { sut, getBalanceService } = make_sut()
+		const account_id = 'some-id'
+
+		jest.spyOn(getBalanceService, 'getBalance')
+
+		
+		const result = await sut.getBalance({account_id})
+		
+		expect(result).toEqual(ok({balance: 20}))
 	})
 })
