@@ -1,5 +1,5 @@
 import { CREDIT_TO_ACCOUNT_SERVICE, ICreditToAccountService } from '@/domain/use-cases/creditToAccount-service'
-import {Adapter, BadRequestException, Body, Mapping, Post} from '@tsclean/core'
+import {Adapter, BadRequestException, Body, HttpCode, Mapping, Post} from '@tsclean/core'
 import { badRequest, HttpResponse, ok } from './helpers/http-helpers'
 
 @Mapping('/api/v1/credit')
@@ -9,6 +9,7 @@ export class CreditAccountController {
 	) {}
 
 	@Post()
+	@HttpCode(200)
 	async creditToAccount(@Body() data: CreditAccountControllerParams) : Promise<HttpResponse> {
 		const result = await this.creditToAccountService.creditToAccount({...data, type: 'credit'})
 
