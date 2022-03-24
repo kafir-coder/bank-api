@@ -22,12 +22,12 @@ export class CreateAccountController {
 		
 		if (exists) throw new BadRequestException(badRequest(new AccountAlreadyExistsError()))
 
-		this.createAccountService.createAccountService({
+		const account = await this.createAccountService.createAccountService({
 			balance: initial_amount,
 			cpf: data.cpf,
 			owner_name: data.owner_name
 		})
-		return ok(12)
+		return ok(account)
 	}
 }
 
