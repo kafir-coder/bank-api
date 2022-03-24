@@ -8,7 +8,7 @@ export class CreateAccountServiceImpl implements ICreateAccountService {
         @Adapter(WRITE_ACCOUNT_REPOSITORY) private readonly createAccountRepository: IWriteAccountRepository
 	) {}
 
-	async createAccountService(data: AddAccountParams): Promise<AccountModel | Error> {
+	async createAccountService(data: AddAccountParams): Promise<AccountModel> {
 		const account = await this.createAccountRepository.create(data)
 		return account
 	} 

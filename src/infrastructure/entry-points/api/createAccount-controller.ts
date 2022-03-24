@@ -15,11 +15,13 @@ export class CreateAccountController {
     @Post()
     @HttpCode(201)
 	async createAccount(@Body() data: CreateAccountRequest): Promise<HttpResponse> {
+
+		this.accountExistsByCpfService.existsByCpf(data.cpf)
 		return ok(12)
 	}
 }
 
-type CreateAccountRequest = {
+export type CreateAccountRequest = {
     owner_name: string
     cpf: string
     initial_amount: number
