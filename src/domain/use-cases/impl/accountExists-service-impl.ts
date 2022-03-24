@@ -8,6 +8,7 @@ export class AccountExistsServiceImpl implements IAccountExistsService {
         @Adapter(READ_ACCOUNT_REPOSITORY) private readonly readAccountRepository: IReadAccountRepository
 	) {}
 	async exists(account_id: string): Promise<boolean> {
-		throw new Error('Method not implemented.')
+		this.readAccountRepository.exists(account_id)
+		return true
 	}
 }
