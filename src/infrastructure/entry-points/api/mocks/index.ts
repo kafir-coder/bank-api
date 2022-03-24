@@ -1,5 +1,6 @@
 import { AddAccountParams, AccountModel } from '@/domain/models/account'
 import { AddTransactionParams, TransactionModel } from '@/domain/models/transaction'
+import { IAccountExistsService } from '@/domain/use-cases/accountExists-service'
 import { IAccountExistsByCpfService } from '@/domain/use-cases/accountExistsByCpf-service'
 import { ICreateAccountService } from '@/domain/use-cases/createAccount-service'
 import { ICreditToAccountService } from '@/domain/use-cases/creditToAccount-service'
@@ -26,6 +27,12 @@ export class CreateAccountServiceMock implements ICreateAccountService {
 
 export class AccountExistsByCpfServiceMock implements IAccountExistsByCpfService {
 	async existsByCpf(cpf: string): Promise<boolean> {
+		return true
+	}
+}
+
+export class AccountExistsServiceMock implements IAccountExistsService {
+	async exists(cpf: string): Promise<boolean> {
 		return true
 	}
 }
