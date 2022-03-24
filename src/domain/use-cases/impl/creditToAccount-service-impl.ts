@@ -4,7 +4,6 @@ import { IReadAccountRepository, READ_ACCOUNT_REPOSITORY } from '@/domain/models
 import { IWriteTransactionRepository, WRITE_TRANSACTION_REPOSITORY } from '@/domain/models/contracts/writeTransaction-repository'
 import { AddTransactionParams, TransactionModel } from '@/domain/models/transaction'
 import {ICreditToAccountService} from '../creditToAccount-service'
-import { AccountDoesntExistsError } from '@/domain/errors/account-doesnt-exists-error'
 
 @Service()
 export class CreditToAccountServiceImpl implements ICreditToAccountService {
