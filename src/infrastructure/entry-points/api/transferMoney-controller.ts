@@ -36,7 +36,7 @@ export class TransferMoneyController {
 			account_id: target_account_id,
 			type: 'credit'
 		})
-		return ok('12')
+		return ok(`money transfered from ${data.origin_account_id} to ${data.target_account_id}`)
 	}
 
 }
