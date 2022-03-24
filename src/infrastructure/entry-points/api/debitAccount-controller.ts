@@ -1,3 +1,4 @@
+import { AccountDoesntExistsError } from '@/domain/errors'
 import { ACCOUNT_EXISTS_SERVICE, IAccountExistsService } from '@/domain/use-cases/accountExists-service'
 import { DEBIT_FROM_ACCOUNT_SERVICE, IDebitFromAccountService } from '@/domain/use-cases/debitFromAccount-service'
 import {Adapter, BadRequestException, Body, HttpCode, Mapping, Post} from '@tsclean/core'
@@ -12,7 +13,10 @@ export class DebitAccountController {
   @Post()
 	@HttpCode(200)
 	async debitFromAccount(@Body() data: DebitAccountControllerParams): Promise<HttpResponse> {
-		this.accountExistsService.exists(data.account_id)
+		const exists = await this.accountExistsService.exists(data.account_id)
+
+		if (!exists) throw new BadRequestException(badRequest(new AccountDoesntExistsError()))
+
 		const result = await this.debitFromAccountService.debitFromAccount({...data, type: 'debit'})
 
 		return ok(result)
