@@ -3,7 +3,7 @@ services:
   web:
     build: .
     ports:
-      - "8000:5000"
+      - "8080:8080"
     environment:
       - MONGO_DEVELOPMENT=mongodb+srv://caio:w8alDCuZWOqxOVKF@cluster0.xb0g2.mongodb.net/bank?retryWrites=true&w=majority
       - PORT=8080
