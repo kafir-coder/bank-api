@@ -1,3 +1,4 @@
+import { AccountAlreadyExistsError } from '@/domain/errors'
 import { ACCOUNT_EXISTS_BY_CPF_SERVICE, IAccountExistsByCpfService } from '@/domain/use-cases/accountExistsByCpf-service'
 import { CREATE_ACCOUNT_SERVICE, ICreateAccountService } from '@/domain/use-cases/createAccount-service'
 import {Mapping, HttpCode, Post, Body, Adapter, BadRequestException} from '@tsclean/core'
@@ -18,8 +19,8 @@ export class CreateAccountController {
 
 		const { initial_amount } = data
 		const exists = await this.accountExistsByCpfService.existsByCpf(data.cpf)
-
-		if (exists instanceof Error) throw new BadRequestException(badRequest(exists))
+		
+		if (exists) throw new BadRequestException(badRequest(new AccountAlreadyExistsError()))
 
 		this.createAccountService.createAccountService({
 			balance: initial_amount,

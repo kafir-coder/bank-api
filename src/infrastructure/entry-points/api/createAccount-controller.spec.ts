@@ -1,4 +1,3 @@
-import { AccountDoesntExistsError } from '@/domain/errors'
 import { IAccountExistsByCpfService } from '@/domain/use-cases/accountExistsByCpf-service'
 import { ICreateAccountService } from '@/domain/use-cases/createAccount-service'
 import { CreateAccountController, CreateAccountRequest } from './createAccount-controller'
@@ -35,7 +34,7 @@ describe('createAccount controller', () => {
 			initial_amount: 300
 		}
 
-		jest.spyOn(accountExistsByCpf, 'existsByCpf')
+		jest.spyOn(accountExistsByCpf, 'existsByCpf').mockReturnValue(Promise.resolve(false))
 
 		await sut.createAccount(accountParams)
 
@@ -51,14 +50,14 @@ describe('createAccount controller', () => {
 			initial_amount: 300
 		}
 
-		jest.spyOn(accountExistsByCpf, 'existsByCpf')
+		jest.spyOn(accountExistsByCpf, 'existsByCpf').mockReturnValue(Promise.resolve(false))
 
 		await sut.createAccount(accountParams)
 
 		expect(accountExistsByCpf.existsByCpf).toHaveBeenCalledWith(accountParams.cpf)
 	})
 
-	it('should return 400 if accountExistsByCpfService.existsByCpf returns AccountDoesntExistsError', async () => {
+	it('should return 400 if accountExistsByCpfService.existsByCpf returns false', async () => {
 		const { sut, accountExistsByCpf} = make_sut()
 
 		const accountParams: CreateAccountRequest = {
@@ -68,7 +67,7 @@ describe('createAccount controller', () => {
 		}
 
 		jest.spyOn(accountExistsByCpf, 'existsByCpf')
-			.mockReturnValue(Promise.resolve(new AccountDoesntExistsError()))
+			.mockReturnValue(Promise.resolve(false))
 
 
 		try {
@@ -79,7 +78,7 @@ describe('createAccount controller', () => {
 	})
 
 	it('should call createAccountService.create', async () => {
-		const { sut, createAccountService } = make_sut()
+		const { sut, createAccountService, accountExistsByCpf } = make_sut()
 		
 		const accountParams: CreateAccountRequest = {
 			owner_name: 'Caio Tony',
@@ -87,6 +86,7 @@ describe('createAccount controller', () => {
 			initial_amount: 300
 		}
 
+		jest.spyOn(accountExistsByCpf, 'existsByCpf').mockReturnValue(Promise.resolve(false))
 		jest.spyOn(createAccountService, 'createAccountService')
 
 		await sut.createAccount(accountParams)
@@ -95,7 +95,7 @@ describe('createAccount controller', () => {
 	})
 
 	it('should call createAccountService.create with proper argument', async () => {
-		const { sut, createAccountService } = make_sut()
+		const { sut, createAccountService, accountExistsByCpf } = make_sut()
 		
 		const accountParams: CreateAccountRequest = {
 			owner_name: 'Caio Tony',
@@ -103,6 +103,7 @@ describe('createAccount controller', () => {
 			initial_amount: 300
 		}
 
+		jest.spyOn(accountExistsByCpf, 'existsByCpf').mockReturnValue(Promise.resolve(false))
 		jest.spyOn(createAccountService, 'createAccountService')
 
 		await sut.createAccount(accountParams)
@@ -113,4 +114,5 @@ describe('createAccount controller', () => {
 			owner_name: accountParams.owner_name
 		})
 	})
+
 })
