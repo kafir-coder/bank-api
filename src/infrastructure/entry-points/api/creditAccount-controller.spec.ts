@@ -31,6 +31,20 @@ const make_sut = (): SutTypes => {
 }
 
 describe('CreditToAccount controller', () => {
+
+	it('should call AccountExistsService.exists', async () => {
+		const { sut, accountExistsService } = make_sut()
+
+		const creditParams: CreditAccountControllerParams = {
+			account_id: 'some-id',
+			amount: 20.2
+		}
+
+		jest.spyOn(accountExistsService, 'exists')
+		await sut.creditToAccount(creditParams)
+		expect(accountExistsService.exists).toHaveBeenCalledTimes(1)
+	})
+
 	it('should call CreditToAccountService.creditToAccount', async () => {
 		const { sut, creditFromAccountService } = make_sut()
 
