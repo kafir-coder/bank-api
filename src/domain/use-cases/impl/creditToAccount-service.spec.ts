@@ -35,50 +35,6 @@ const make_sut = (): SutTypes => {
 
 describe('CreditToAccount usecase', () => {
 
-	it('should call readAccountRepository.exists', async () => {
-
-		const data: AddTransactionParams = {
-			account_id: 'some-id',
-			amount: 20.4, 
-			type: 'debit'
-		}
-		const { sut, readAccountRepository } = make_sut()
-
-		jest.spyOn(readAccountRepository, 'exists')
-		await sut.creditToAccount(data)
-
-		expect(readAccountRepository.exists).toHaveBeenCalledTimes(1)
-	})
-
-	it('should call readAccountRepository.exists with proper argument', async () => {
-
-		const data: AddTransactionParams = {
-			account_id: 'some-id',
-			amount: 20.4, 
-			type: 'debit'
-		}
-		const { sut, readAccountRepository } = make_sut()
-
-		jest.spyOn(readAccountRepository, 'exists')
-		await sut.creditToAccount(data)
-
-		expect(readAccountRepository.exists).toHaveBeenCalledWith(data.account_id)
-	})
-
-	it('should return AccountDoesntExistsError error if readAccountRepository.exists returns false', async () => {
-		const data: AddTransactionParams = {
-			account_id: 'some-id',
-			amount: 20.4, 
-			type: 'debit'
-		}
-		const { sut, readAccountRepository } = make_sut()
-
-		jest.spyOn(readAccountRepository, 'exists').mockReturnValue(Promise.resolve(false))
-		const result = await sut.creditToAccount(data)
-
-		expect(result).toEqual(new AccountDoesntExistsError())
-	})
-
 	it('should call WriteTransactionRepository.add', async () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
