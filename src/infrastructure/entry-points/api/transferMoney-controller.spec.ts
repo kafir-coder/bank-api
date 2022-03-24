@@ -45,6 +45,22 @@ describe('TransferMoney controller', () => {
 		expect(accountExistsService.exists).toHaveBeenCalledTimes(2)
 	})
 
+	it('should return 400 if AccountExistsService.exists returns false', async () => {
+		const { sut, accountExistsService } = make_sut()
+
+		const transferParams: TransferControllerParams = {
+			origin_account_id: 'some-id',
+			target_account_id: 'other-id',
+			amount: 20
+		}
+
+		jest.spyOn(accountExistsService, 'exists').mockReturnValue(Promise.resolve(false))
+		try {
+			await sut.transferMoney(transferParams)
+		} catch (error) {
+			expect(error.name).toBe('BadRequestException')
+		}
+	})
 	it('should call DebitFromAccountService.debitFromAccount', async () => {
 		const { sut, debitFromAccountService } = make_sut()
 		const transferParams: TransferControllerParams = {
