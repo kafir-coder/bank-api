@@ -1,7 +1,7 @@
 import { ACCOUNT_EXISTS_BY_CPF_SERVICE, IAccountExistsByCpfService } from '@/domain/use-cases/accountExistsByCpf-service'
 import { CREATE_ACCOUNT_SERVICE, ICreateAccountService } from '@/domain/use-cases/createAccount-service'
-import {Mapping, HttpCode, Post, Body, Adapter} from '@tsclean/core'
-import { HttpResponse, ok } from './helpers/http-helpers'
+import {Mapping, HttpCode, Post, Body, Adapter, BadRequestException} from '@tsclean/core'
+import { badRequest, HttpResponse, ok } from './helpers/http-helpers'
 
 @Mapping('api/v1/account')
 export class CreateAccountController {
@@ -16,7 +16,9 @@ export class CreateAccountController {
     @HttpCode(201)
 	async createAccount(@Body() data: CreateAccountRequest): Promise<HttpResponse> {
 
-		this.accountExistsByCpfService.existsByCpf(data.cpf)
+		const exists = await this.accountExistsByCpfService.existsByCpf(data.cpf)
+
+		if (exists instanceof Error) throw new BadRequestException(badRequest(exists))
 		return ok(12)
 	}
 }
