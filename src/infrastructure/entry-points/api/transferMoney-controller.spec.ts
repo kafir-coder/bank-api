@@ -45,6 +45,20 @@ describe('TransferMoney controller', () => {
 		expect(accountExistsService.exists).toHaveBeenCalledTimes(2)
 	})
 
+	it('should call the 2 instances of AccountExistsService.exists with proper arguments', async () => {
+		const { sut, accountExistsService } = make_sut()
+
+		const transferParams: TransferControllerParams = {
+			origin_account_id: 'some-id',
+			target_account_id: 'other-id',
+			amount: 20
+		}
+
+		jest.spyOn(accountExistsService, 'exists')
+		await sut.transferMoney(transferParams)
+		expect(accountExistsService.exists).toHaveBeenNthCalledWith(1, transferParams.origin_account_id)
+		expect(accountExistsService.exists).toHaveBeenNthCalledWith(2, transferParams.target_account_id)
+	})
 	it('should return 400 if AccountExistsService.exists returns false', async () => {
 		const { sut, accountExistsService } = make_sut()
 
