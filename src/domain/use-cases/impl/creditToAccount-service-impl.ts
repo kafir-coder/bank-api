@@ -16,11 +16,8 @@ export class CreditToAccountServiceImpl implements ICreditToAccountService {
 	}
 	async creditToAccount(data: Omit<AddTransactionParams, 'type'>): Promise<TransactionModel | Error> {
 		const { account_id, amount } = data
-		const account_exists = await this.readAccountRepository.exists(account_id)
-		if (!account_exists) return new AccountDoesntExistsError()
-
+		
 		const balance = await this.readAccountRepository.getBalance(account_id)
-
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const sum = balance!+amount
 		const transaction = await this.writeTransactionRepository.add({...data,  type: 'credit'})
