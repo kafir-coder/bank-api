@@ -116,7 +116,7 @@ describe('DebitFromAccount Controller', () => {
 		}
 	})
 
-	it('should return 200 Object if Service.debitFromAccount returns TransactionModel object', async () => {
+	it('should return ok', async () => {
 		const { sut, debitFromAccountService } = make_sut()
 
 		const debitParams: DebitAccountControllerParams = {
