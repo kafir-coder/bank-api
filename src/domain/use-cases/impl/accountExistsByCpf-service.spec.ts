@@ -1,4 +1,3 @@
-import { AccountDoesntExistsError } from '@/domain/errors'
 import { IReadAccountRepository } from '@/domain/models/contracts/readAccount-repository'
 import { IAccountExistsByCpfService } from '../accountExistsByCpf-service'
 import { AccountExistsByCpfServiceImpl } from './accountExistsByCpf-service-impl'
