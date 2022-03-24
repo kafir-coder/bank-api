@@ -67,7 +67,7 @@ describe('GetBalance controller', () => {
 
 	})
 
-	it('should return 200 if GetBalanceService.getBalance returns number', async () => {
+	it('should return ok', async () => {
 		const { sut, getBalanceService } = make_sut()
 		const account_id = 'some-id'
 
