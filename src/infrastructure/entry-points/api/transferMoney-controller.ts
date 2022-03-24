@@ -31,7 +31,7 @@ export class TransferMoneyController {
 
 		if (result instanceof Error) throw new BadRequestException(badRequest(result))
 		
-		this.creditToAccountService.creditToAccount({
+		await this.creditToAccountService.creditToAccount({
 			amount,
 			account_id: target_account_id,
 			type: 'credit'
