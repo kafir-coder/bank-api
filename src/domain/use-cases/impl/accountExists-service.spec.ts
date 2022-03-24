@@ -15,4 +15,17 @@ const make_sut = (): SutTypes => {
 	return { sut, readAccountRepository}
 }
 
-describe('AccountExists usecase', () => {})
+describe('AccountExists usecase', () => {
+
+	it('should call readAccountRepository.existsByCPF', async () => {
+		const { sut, readAccountRepository } = make_sut()
+
+		const cpf = 'some-cpf'
+
+		jest.spyOn(readAccountRepository, 'exists')
+
+		await sut.exists(cpf)
+
+		expect(readAccountRepository.exists).toHaveBeenCalledTimes(1)
+	})
+})
