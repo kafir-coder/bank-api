@@ -28,4 +28,18 @@ describe('AccountExists usecase', () => {
 
 		expect(readAccountRepository.exists).toHaveBeenCalledTimes(1)
 	})
+
+	it('should call readAccountRepository.exists with proper argument', async () => {
+		const { sut, readAccountRepository } = make_sut()
+
+		const cpf = 'some-cpf'
+
+		jest.spyOn(readAccountRepository, 'exists')
+
+		await sut.exists(cpf)
+
+		expect(readAccountRepository.exists).toHaveBeenCalledWith(cpf)
+	})
+
+
 })
