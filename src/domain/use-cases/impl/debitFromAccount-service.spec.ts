@@ -59,7 +59,7 @@ describe('DebitFromAccount usecase', () => {
 		expect(readAccountRepository.getBalance).toHaveBeenCalledWith(data.account_id)
 	})
 
-	it('should return null if difference between balance and amount to debit be negative', async () => {
+	it('should return AccountHasNotSufficientMoneyError if difference between balance and amount to debit be negative', async () => {
 		const data: AddTransactionParams = {
 			account_id: 'some-id',
 			amount: 20.4, 
