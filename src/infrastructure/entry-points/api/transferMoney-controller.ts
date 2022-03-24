@@ -2,8 +2,8 @@ import { AccountDoesntExistsError } from '@/domain/errors'
 import { ACCOUNT_EXISTS_SERVICE, IAccountExistsService } from '@/domain/use-cases/accountExists-service'
 import { CREDIT_TO_ACCOUNT_SERVICE, ICreditToAccountService } from '@/domain/use-cases/creditToAccount-service'
 import { DEBIT_FROM_ACCOUNT_SERVICE, IDebitFromAccountService } from '@/domain/use-cases/debitFromAccount-service'
-import {Adapter, BadRequestException, Body, HttpCode, Mapping, Post} from '@tsclean/core'
-import { badRequest, HttpResponse, ok } from './helpers/http-helpers'
+import {Adapter, BadRequestException, Body, ForbiddenException, HttpCode, Mapping, Post} from '@tsclean/core'
+import { badRequest, forbidden, HttpResponse, ok } from './helpers/http-helpers'
 
 @Mapping('/api/v1/transfer')
 export class TransferMoneyController {
@@ -29,7 +29,7 @@ export class TransferMoneyController {
 			type: 'debit'
 		})
 
-		if (result instanceof Error) throw new BadRequestException(badRequest(result))
+		if (result instanceof Error) throw new ForbiddenException(forbidden(result))
 		
 		await this.creditToAccountService.creditToAccount({
 			amount,

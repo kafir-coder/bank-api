@@ -100,7 +100,7 @@ describe('DebitFromAccount Controller', () => {
 		expect(debitFromAccountService.debitFromAccount).toHaveBeenCalledWith({...debitParams, type: 'debit'})
 	})
 
-	it('should return 400 if Service.debitFromAccount returns AccountHasNotSufficientMoney', async () => {
+	it('should return 403 if Service.debitFromAccount returns AccountHasNotSufficientMoney', async () => {
 		const { sut, debitFromAccountService } = make_sut()
 
 		const debitParams: DebitAccountControllerParams = {
@@ -112,7 +112,7 @@ describe('DebitFromAccount Controller', () => {
 		try {
 			await sut.debitFromAccount(debitParams)
 		} catch (error) {
-			expect(error.name).toBe('BadRequestException')
+			expect(error.name).toBe('ForbiddenException')
 		}
 	})
 

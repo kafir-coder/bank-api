@@ -1,8 +1,8 @@
 import { AccountDoesntExistsError } from '@/domain/errors'
 import { ACCOUNT_EXISTS_SERVICE, IAccountExistsService } from '@/domain/use-cases/accountExists-service'
 import { DEBIT_FROM_ACCOUNT_SERVICE, IDebitFromAccountService } from '@/domain/use-cases/debitFromAccount-service'
-import {Adapter, BadRequestException, Body, HttpCode, Mapping, Post} from '@tsclean/core'
-import { badRequest, HttpResponse, ok } from './helpers/http-helpers'
+import {Adapter, BadRequestException, Body, ForbiddenException, HttpCode, Mapping, Post} from '@tsclean/core'
+import { badRequest, forbidden, HttpResponse, ok } from './helpers/http-helpers'
 
 @Mapping('/api/v1/debit')
 export class DebitAccountController {
@@ -19,6 +19,7 @@ export class DebitAccountController {
 
 		const result = await this.debitFromAccountService.debitFromAccount({...data, type: 'debit'})
 
+		if (result instanceof Error) throw new ForbiddenException(forbidden(result))
 		return ok(result)
 	}
 }

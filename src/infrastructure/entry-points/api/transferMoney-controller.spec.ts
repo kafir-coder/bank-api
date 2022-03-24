@@ -105,7 +105,7 @@ describe('TransferMoney controller', () => {
 		})
 	})
 
-	it('should return 400 if DebitFromAccountService.debitFromAccount returns AccountHasNotSufficientMoneyError', async () => {
+	it('should return 403 if DebitFromAccountService.debitFromAccount returns AccountHasNotSufficientMoneyError', async () => {
 		const { sut, debitFromAccountService } = make_sut()
 		const transferParams: TransferControllerParams = {
 			origin_account_id: 'some-id',
@@ -116,7 +116,7 @@ describe('TransferMoney controller', () => {
 		try {
 			await sut.transferMoney(transferParams)
 		} catch (error) {
-			expect(error.name).toBe('BadRequestException')
+			expect(error.name).toBe('ForbiddenException')
 		}
 	})
 
