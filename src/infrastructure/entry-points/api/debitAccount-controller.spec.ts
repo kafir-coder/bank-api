@@ -44,6 +44,19 @@ describe('DebitFromAccount Controller', () => {
 		await sut.debitFromAccount(debitParams)
 		expect(accountExistsService.exists).toHaveBeenCalledTimes(1)
 	})
+
+	it('should call AccountExistsService.exists with proper argument', async () => {
+		const { sut, accountExistsService } = make_sut()
+
+		const debitParams: DebitAccountControllerParams = {
+			account_id: 'some-id',
+			amount: 20.2
+		}
+
+		jest.spyOn(accountExistsService, 'exists')
+		await sut.debitFromAccount(debitParams)
+		expect(accountExistsService.exists).toHaveBeenCalledWith(debitParams.account_id)
+	})
 	it('should call DebitFromAccountService.debitFromAccount', async () => {
 		const { sut, debitFromAccountService } = make_sut()
 
