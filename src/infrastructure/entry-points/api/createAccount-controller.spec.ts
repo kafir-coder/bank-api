@@ -1,3 +1,4 @@
+import { AccountDoesntExistsError } from '@/domain/errors'
 import { IAccountExistsByCpfService } from '@/domain/use-cases/accountExistsByCpf-service'
 import { ICreateAccountService } from '@/domain/use-cases/createAccount-service'
 import { CreateAccountController, CreateAccountRequest } from './createAccount-controller'
@@ -55,5 +56,25 @@ describe('createAccount controller', () => {
 		await sut.createAccount(accountParams)
 
 		expect(accountExistsByCpf.existsByCpf).toHaveBeenCalledWith(accountParams.cpf)
+	})
+
+	it('should return 400 if accountExistsByCpfService.existsByCpf returns AccountDoesntExistsError', async () => {
+		const { sut, accountExistsByCpf} = make_sut()
+
+		const accountParams: CreateAccountRequest = {
+			owner_name: 'Caio Tony',
+			cpf: 'some-cpf',
+			initial_amount: 300
+		}
+
+		jest.spyOn(accountExistsByCpf, 'existsByCpf')
+			.mockReturnValue(Promise.resolve(new AccountDoesntExistsError()))
+
+
+		try {
+			await sut.createAccount(accountParams)
+		} catch (error) {
+			expect(error.name).toBe('BadRequestException')
+		}
 	})
 })
