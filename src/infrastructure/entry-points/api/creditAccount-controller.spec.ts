@@ -1,8 +1,10 @@
 import { AccountDoesntExistsError } from '@/domain/errors'
 import { AddTransactionParams, TransactionModel } from '@/domain/models/transaction'
+import { IAccountExistsService } from '@/domain/use-cases/accountExists-service'
 import { ICreditToAccountService } from '@/domain/use-cases/creditToAccount-service'
 import { CreditAccountController, CreditAccountControllerParams } from './creditAccount-controller'
 import { ok } from './helpers/http-helpers'
+import { AccountExistsServiceMock } from './mocks'
 
 class CreditToAccountServiceMock implements ICreditToAccountService {
 	async creditToAccount(data: AddTransactionParams): Promise<TransactionModel | Error> {
@@ -12,16 +14,18 @@ class CreditToAccountServiceMock implements ICreditToAccountService {
 
 type SutTypes = {
   sut: CreditAccountController,
+	accountExistsService: IAccountExistsService,
   creditFromAccountService: ICreditToAccountService
 }
 const make_sut = (): SutTypes => {
 
 	const creditFromAccountService = new CreditToAccountServiceMock()
-
-	const sut = new CreditAccountController(creditFromAccountService)
+	const accountExistsService = new AccountExistsServiceMock()
+	const sut = new CreditAccountController(accountExistsService, creditFromAccountService)
 
 	return { 
 		sut,
+		accountExistsService, 
 		creditFromAccountService
 	}
 }
