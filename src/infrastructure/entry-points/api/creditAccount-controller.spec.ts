@@ -98,7 +98,7 @@ describe('CreditToAccount controller', () => {
 		expect(creditFromAccountService.creditToAccount).toHaveBeenCalledWith({...creditParams, type: 'credit'})
 	})
 
-	it('should return TransactionModel Object if Service.creditToAccount returns TransactionModel', async () => {
+	it('should return ok', async () => {
 		const { sut, creditFromAccountService } = make_sut()
 
 		const creditParams: CreditAccountControllerParams = {
