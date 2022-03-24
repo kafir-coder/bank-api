@@ -45,7 +45,7 @@ describe('AccountExistsByCpf usecase', () => {
 		expect(readAccountRepository.existsByCPF).toHaveBeenCalledWith(cpf)
 	})
 
-	it('should return AccountDoesntExistError if readAccountRepository.existsByCPF false',async () => {
+	it('should return false if readAccountRepository.existsByCPF false',async () => {
 		const { sut, readAccountRepository } = make_sut()
 
 		const cpf = 'some-cpf'
@@ -54,7 +54,7 @@ describe('AccountExistsByCpf usecase', () => {
 
 		const result = await sut.existsByCpf(cpf)
 
-		expect(result).toEqual(new AccountDoesntExistsError())
+		expect(result).toBe(false)
 
 	})
 

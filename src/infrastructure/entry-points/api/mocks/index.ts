@@ -25,7 +25,7 @@ export class CreateAccountServiceMock implements ICreateAccountService {
 }
 
 export class AccountExistsByCpfServiceMock implements IAccountExistsByCpfService {
-	async existsByCpf(cpf: string): Promise<boolean | Error> {
+	async existsByCpf(cpf: string): Promise<boolean> {
 		return true
 	}
 }
