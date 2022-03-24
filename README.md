@@ -2,6 +2,8 @@
 
 A simple API that implements trivial bank accounts operations
 
+[The link to the API documentation](https://app.swaggerhub.com/apis/kafir-coder/bank_api/1.0.0#/)
+
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/kafir-coder/bank-api/lint-build-test)
 ![GitHub](https://img.shields.io/github/license/kafir-coder/bank-api)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/kafir-coder/bank-api)
