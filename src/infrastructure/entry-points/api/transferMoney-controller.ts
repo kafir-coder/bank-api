@@ -18,7 +18,10 @@ export class TransferMoneyController {
 
 		const origin_exists = await this.accountExistsService.exists(data.origin_account_id)
 		const target_exists = await this.accountExistsService.exists(data.target_account_id)
-					
+		
+		if (!origin_exists || !target_exists) 
+			throw new BadRequestException(badRequest(new AccountDoesntExistsError()))
+		
 		const {origin_account_id, target_account_id, amount} = data
 		const result = await this.debitFromAccountService.debitFromAccount({
 			amount,
