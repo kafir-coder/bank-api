@@ -3,7 +3,7 @@ import { ACCOUNT_EXISTS_BY_CPF_SERVICE, IAccountExistsByCpfService } from '@/dom
 import { CREATE_ACCOUNT_SERVICE, ICreateAccountService } from '@/domain/use-cases/createAccount-service'
 import {Mapping, HttpCode, Post, Body, Adapter, BadRequestException} from '@tsclean/core'
 import { badRequest, HttpResponse, ok } from './helpers/http-helpers'
-
+import ramda from 'ramda' 
 @Mapping('api/v1/account')
 export class CreateAccountController {
 
@@ -17,6 +17,8 @@ export class CreateAccountController {
     @HttpCode(201)
 	async createAccount(@Body() data: CreateAccountRequest): Promise<HttpResponse> {
 
+		if (ramda.isEmpty(data)) throw new BadRequestException(badRequest(new Error('incomming data is empty')))
+		
 		const { initial_amount } = data
 		const exists = await this.accountExistsByCpfService.existsByCpf(data.cpf)
 		
