@@ -40,4 +40,20 @@ describe('createAccount controller', () => {
 
 		expect(accountExistsByCpf.existsByCpf).toHaveBeenCalledTimes(1)
 	})
+
+	it('should call accountExistsByCpfService.existsByCpf with proper argument', async () => {
+		const { sut, accountExistsByCpf } = make_sut()
+
+		const accountParams: CreateAccountRequest = {
+			owner_name: 'Caio Tony',
+			cpf: 'some-cpf',
+			initial_amount: 300
+		}
+
+		jest.spyOn(accountExistsByCpf, 'existsByCpf')
+
+		await sut.createAccount(accountParams)
+
+		expect(accountExistsByCpf.existsByCpf).toHaveBeenCalledWith(accountParams.cpf)
+	})
 })
