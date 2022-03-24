@@ -15,7 +15,7 @@ export class CreditAccountController {
 	@HttpCode(200)
 	async creditToAccount(@Body() data: CreditAccountControllerParams) : Promise<HttpResponse> {
 		const exists = await this.accountExistsService.exists(data.account_id)
-
+		if (!exists) throw new BadRequestException(badRequest(new AccountDoesntExistsError()))
 		const result = await this.creditToAccountService.creditToAccount({...data, type: 'credit'})
 		return ok(result)
 	}
