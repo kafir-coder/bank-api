@@ -16,9 +16,16 @@ export class CreateAccountController {
     @HttpCode(201)
 	async createAccount(@Body() data: CreateAccountRequest): Promise<HttpResponse> {
 
+		const { initial_amount } = data
 		const exists = await this.accountExistsByCpfService.existsByCpf(data.cpf)
 
 		if (exists instanceof Error) throw new BadRequestException(badRequest(exists))
+
+		this.createAccountService.createAccountService({
+			balance: initial_amount,
+			cpf: data.cpf,
+			owner_name: data.owner_name
+		})
 		return ok(12)
 	}
 }
