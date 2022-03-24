@@ -77,4 +77,20 @@ describe('createAccount controller', () => {
 			expect(error.name).toBe('BadRequestException')
 		}
 	})
+
+	it('should call createAccountService.create', async () => {
+		const { sut, createAccountService } = make_sut()
+		
+		const accountParams: CreateAccountRequest = {
+			owner_name: 'Caio Tony',
+			cpf: 'some-cpf',
+			initial_amount: 300
+		}
+
+		jest.spyOn(createAccountService, 'createAccountService')
+
+		await sut.createAccount(accountParams)
+
+		expect(createAccountService.createAccountService).toHaveBeenCalledTimes(1)
+	})
 })
