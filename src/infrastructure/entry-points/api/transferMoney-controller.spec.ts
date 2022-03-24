@@ -1,12 +1,14 @@
 import { AccountDoesntExistsError } from '@/domain/errors'
+import { IAccountExistsService } from '@/domain/use-cases/accountExists-service'
 import { ICreditToAccountService } from '@/domain/use-cases/creditToAccount-service'
 import { IDebitFromAccountService } from '@/domain/use-cases/debitFromAccount-service'
-import { CreditToAccountServiceMock, DebitFromAccountServiceMock } from './mocks'
+import { AccountExistsServiceMock, CreditToAccountServiceMock, DebitFromAccountServiceMock } from './mocks'
 import { TransferControllerParams, TransferMoneyController } from './transferMoney-controller'
 
 
 type SutTypes = {
   sut: TransferMoneyController,
+	accountExistsService: IAccountExistsService,
   debitFromAccountService: IDebitFromAccountService,
   creditToAccountService: ICreditToAccountService
 }
@@ -14,11 +16,12 @@ const make_sut = (): SutTypes=> {
 
 	const debitFromAccountService = new DebitFromAccountServiceMock()
 	const creditToAccountService = new CreditToAccountServiceMock()
-
-	const sut = new TransferMoneyController(debitFromAccountService, creditToAccountService)
+	const accountExistsService = new AccountExistsServiceMock()
+	const sut = new TransferMoneyController(accountExistsService ,debitFromAccountService, creditToAccountService)
 
 	return {
 		sut, 
+		accountExistsService,
 		debitFromAccountService,
 		creditToAccountService
 	}
@@ -28,6 +31,20 @@ const make_sut = (): SutTypes=> {
 
 describe('TransferMoney controller', () => {
   
+	it('should call AccountExistsService.exists 2 times', async () => {
+		const { sut, accountExistsService } = make_sut()
+
+		const transferParams: TransferControllerParams = {
+			origin_account_id: 'some-id',
+			target_account_id: 'other-id',
+			amount: 20
+		}
+
+		jest.spyOn(accountExistsService, 'exists')
+		await sut.transferMoney(transferParams)
+		expect(accountExistsService.exists).toHaveBeenCalledTimes(2)
+	})
+
 	it('should call DebitFromAccountService.debitFromAccount', async () => {
 		const { sut, debitFromAccountService } = make_sut()
 		const transferParams: TransferControllerParams = {
