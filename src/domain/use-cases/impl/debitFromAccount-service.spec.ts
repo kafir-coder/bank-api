@@ -6,7 +6,6 @@ import { DebitFromAccountServiceImpl } from './debitFromAccount-service-impl'
 import { ReadAccountRepositoryMock, WriteAccountRepositoryMock } from './mocks/createAccount-service'
 import { WriteTransactionRepositoryMock } from './mocks/debitFromAccount-service'
 import { IWriteAccountRepository } from '@/domain/models/contracts/writeAccount-repository'
-import { AccountDoesntExistsError } from '@/domain/errors/account-doesnt-exists-error'
 import { AccountHasNotSufficientMoneyError } from '@/domain/errors/account-hasnot-sufficient-money-error'
 
 
@@ -31,49 +30,6 @@ const make_sut = (): SutTypes => {
 	}
 }  
 describe('DebitFromAccount usecase', () => {
-	
-	it('should call AccountRepository.exists',async () => {
-		const data: AddTransactionParams = {
-			account_id: 'some-id',
-			amount: 20.4, 
-			type: 'debit'
-		}
-		const { sut, readAccountRepository } = make_sut() 
-
-		jest.spyOn(readAccountRepository, 'exists')
-
-		await sut.debitFromAccount(data)
-		expect(readAccountRepository.exists).toHaveBeenCalledTimes(1)
-	})
-
-	it('should call AccountRepository.exists with proper argument',async () => {
-		const data: AddTransactionParams = {
-			account_id: 'some-id',
-			amount: 20.4, 
-			type: 'debit'
-		}
-		const { sut, readAccountRepository } = make_sut() 
-
-		jest.spyOn(readAccountRepository, 'exists')
-
-		await sut.debitFromAccount(data)
-		expect(readAccountRepository.exists).toHaveBeenCalledWith(data.account_id)
-	})
-
-	it('should return AccountDoesntExistsError if AccountRepository.exists returns false', async () => {
-		const data: AddTransactionParams = {
-			account_id: 'some-id',
-			amount: 20.4, 
-			type: 'debit'
-		}
-		const { sut, readAccountRepository } = make_sut() 
-
-		jest.spyOn(readAccountRepository, 'exists').mockReturnValue(Promise.resolve(false))
-
-		const result = await sut.debitFromAccount(data)
-
-		expect(result).toEqual(new AccountDoesntExistsError())
-	})
 
 	it('should call AccountRepository.getBalance', async () => {
 		const data: AddTransactionParams = {
