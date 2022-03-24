@@ -45,6 +45,18 @@ describe('CreditToAccount controller', () => {
 		expect(accountExistsService.exists).toHaveBeenCalledTimes(1)
 	})
 
+	it('should call AccountExistsService.exists with proper argument', async () => {
+		const { sut, accountExistsService } = make_sut()
+
+		const creditParams: CreditAccountControllerParams = {
+			account_id: 'some-id',
+			amount: 20.2
+		}
+
+		jest.spyOn(accountExistsService, 'exists')
+		await sut.creditToAccount(creditParams)
+		expect(accountExistsService.exists).toHaveBeenCalledWith(creditParams.account_id)
+	})
 	it('should call CreditToAccountService.creditToAccount', async () => {
 		const { sut, creditFromAccountService } = make_sut()
 
