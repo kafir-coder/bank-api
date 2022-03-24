@@ -53,4 +53,16 @@ describe('AccountExists usecase', () => {
 		expect(result).toBe(false)
 
 	})
+
+	it('should return true if readAccountRepository.exists returns true', async () => {
+		const { sut, readAccountRepository } = make_sut()
+
+		const cpf = 'some-cpf'
+
+		jest.spyOn(readAccountRepository, 'exists')
+
+		const result = await sut.exists(cpf)
+
+		expect(result).toBe(true)
+	})
 })
